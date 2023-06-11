@@ -7,6 +7,7 @@ import board
 import csv
 import logging
 import time
+from setup_logging import setup_logging
 
 # This is the main telemetry file 
 TELEMETRY_FILE = 'telemetry.csv'
@@ -96,6 +97,7 @@ class TelemetryHandler:
 
 # Test functionality
 if __name__ == "__main__":
+    setup_logging()
     tel = TelemetryHandler()
     data = tel.gather_telemetry()
     print(data)
