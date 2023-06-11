@@ -57,8 +57,8 @@ class TelemetryHandler:
             # Just output the header, not the data
             return ['Telemetry Gather Time [sec]']
             
-    execution_time = time.time() - collecting_telemetry_start_time
-    return ["{:.1f}".format(execution_time)]    
+        execution_time = time.time() - collecting_telemetry_start_time
+        return ["{:.1f}".format(execution_time)]    
 
 ###################### End of Private Functions to Collect Telemetry ######################
 
