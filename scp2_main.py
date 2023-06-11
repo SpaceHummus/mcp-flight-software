@@ -30,8 +30,9 @@ if __name__ == "__main__":
         subprocess.call(["git", "pull", "--force"])
     
     # Update self
-    print("Preforming self update")
-    dest_path = "../scp2_main.py"
-    if os.path.exists(dest_path):
-        os.remove(dest_path)
-    shutil.move("scp2_main.py", "../")
+    if os.path.exists("scp2_main.py"):
+        print("Preforming self update")
+        dest_path = "../scp2_main.py"
+        if os.path.exists(dest_path):
+            os.remove(dest_path)
+        shutil.move("scp2_main.py", "../")
