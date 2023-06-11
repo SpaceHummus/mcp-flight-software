@@ -8,48 +8,77 @@ from setup_logging import setup_logging
 import subprocess
 import socket
 
-def _check_internet_connection():
-    try:
-        # Check if there is internet connectivity by attempting to connect to a reliable host
-        socket.create_connection(("www.google.com", 80))
-        return True
-    except OSError:
-        return False
-                
+class GitHandler:
 
-def _update_folder():
-    # Get the current directory of the Python script
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    
-    # Get original directory 
-    original_dir = os.getcwd()
-    
-    # Change directory 
-    os.chdir(current_dir)
-    
-    # Check if the MCP folder is a Git repository
-    if os.path.isdir(".git"):
-        logging.info("Updating from git...")
-        # Use the 'git pull' command to update the repository
-        #subprocess.call(["git", "pull"])
-        # Do a "hard" update of the repositry, ignore all local changes
-        subprocess.call(["git", "fetch", "--all"])
-        subprocess.call(["git", "'reset", "--hard", "origin/master"])
-        logging.info("Done")
-    else:
-        logging.warning("This is not a git repository")
+##################### Change folders to/from git folder #####################
+    original_dir = None
+    def _change_to_git_folder(self):
+        # Get the current directory of the Python script
+        current_dir = os.path.dirname(os.path.abspath(__file__))
         
-    # Change directory back
-    os.chdir(original_dir)
+        # Get original directory 
+        self.original_dir = os.getcwd()
         
+        # Change directory 
+        os.chdir(current_dir)
+    
+    def _change_folder_back(self):
+        os.chdir(self.original_dir)
+
+##################### End of change folders to/from git folder #####################                    
+
+    def _check_internet_connection(self):
+        try:
+            # Check if there is internet connectivity by attempting to connect to a reliable host
+            socket.create_connection(("www.google.com", 80))
+            return True
+        except OSError:
+            return False
+
+    def _update_folder(self):
         
-def git_update_code():
-    if (_check_internet_connection()):
-        logging.info("We have internet")
-        _update_folder()
-    else:
-        logging.warning("No internet connection, skipping the update")
+        self._change_to_git_folder()
+        
+        # Check if the MCP folder is a Git repository
+        if os.path.isdir(".git"):
+            logging.info("Updating from git...")
+            # Use the 'git pull' command to update the repository
+            #subprocess.call(["git", "pull"])
+            # Do a "hard" update of the repositry, ignore all local changes
+            subprocess.call(["git", "fetch", "--all"])
+            subprocess.call(["git", "'reset", "--hard", "origin/master"])
+            logging.info("Done")
+        else:
+            logging.warning("This is not a git repository")
+            
+        self._change_folder_back()
+            
+    def git_update_code(self):
+        if (_check_internet_connection()):
+            logging.info("We have internet")
+            self._update_folder()
+        else:
+            logging.warning("No internet connection, skipping the update")
+            
+    def git_get_version(self):
+        # Execute git command to retrieve version information
+        self._change_to_git_folder()
+        result = subprocess.run(['git', '--version'], capture_output=True, text=True)
+        self._change_folder_back()
+        
+        if result.returncode == 0:
+            # Extract the version string from the command output
+            output = result.stdout.strip()
+            version = output.split()[-1]
+            logger.info("Current repository version " + version)
+            return version
+        else:
+            # Git command execution failed
+            return None
 
 if __name__ == "__main__":
     setup_logging()
-    git_update_code()
+    g = GitHandler()
+    g.git_get_version()
+    g.git_update_code()
+    g.git_get_version()
