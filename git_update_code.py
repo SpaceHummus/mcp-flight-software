@@ -29,7 +29,10 @@ def _update_folder():
     if os.path.isdir(".git"):
         print("Updating folder...")
         # Use the 'git pull' command to update the repository
-        subprocess.call(["git", "pull"])
+        #subprocess.call(["git", "pull"])
+        # Do a "hard" update of the repositry, ignore all local changes
+        subprocess.call(["git", "fetch", "--all"])
+        subprocess.call(["git", "'reset", "--hard", "origin/master"])
     else:
         print ("This is not a git repository")
         
