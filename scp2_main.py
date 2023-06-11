@@ -22,7 +22,9 @@ if __name__ == "__main__":
 
     # Run main code 
     os.chdir("mcp-flight-software")
-    subprocess.call(["sudo","python","main_mcp.py"])
+    try:
+        subprocess.call(["sudo","python","main_mcp.py"])
+    # Continue even if error happened
     
     # Update code using the git handler
     subprocess.call(["python","git_handler.py"])
