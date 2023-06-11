@@ -4,8 +4,9 @@ RPi automatically runs this code at start-up.
 This code will check out mcp (if the folder doesn't exist), and run mcp_main.py
 '''
 
-import subprocess
 import os
+import shutil
+import subprocess
 
 if __name__ == "__main__":
     # Get the current directory of the Python script
@@ -22,3 +23,9 @@ if __name__ == "__main__":
     # Run main code 
     os.chdir("mcp-flight-software")
     subprocess.call(["sudo","python","main_mcp.py"])
+    
+    # Update code using the git handler
+    subprocess.call(["python","git_handler.py"])
+    
+    # Update self
+    shutil.move("scp2_main.py", "../")
