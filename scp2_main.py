@@ -22,12 +22,16 @@ if __name__ == "__main__":
 
     # Run main code 
     os.chdir("mcp-flight-software")
-    try:
-        subprocess.call(["sudo","python","main_mcp.py"])
-    # Continue even if error happened
+    return_code = subprocess.call(["sudo","python","main_mcp.py"])
     
-    # Update code using the git handler
-    subprocess.call(["python","git_handler.py"])
+    # If error occured, try updating
+    if return_code != 0:
+        print("Preforming git update to try and resolve this issue")
+        subprocess.call(["git", "pull", "--force"])
     
     # Update self
+    print("Preforming self update")
+    dest_path = "../scp2_main.py"
+    if os.path.exists(dest_path):
+        os.remove(dest_path)
     shutil.move("scp2_main.py", "../")

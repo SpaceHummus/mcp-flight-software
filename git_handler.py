@@ -42,11 +42,8 @@ class GitHandler:
         # Check if the MCP folder is a Git repository
         if os.path.isdir(".git"):
             logging.info("Updating from git...")
-            # Use the 'git pull' command to update the repository
-            #subprocess.call(["git", "pull"])
-            # Do a "hard" update of the repositry, ignore all local changes
-            subprocess.call(["git", "fetch", "--all"])
-            subprocess.call(["git", "'reset", "--hard", "origin/master"])
+            # Use the 'git pull' command to update the repository, ignore all local changes
+            subprocess.call(["git", "pull", "--force"])
             logging.info("Done")
         else:
             logging.warning("This is not a git repository")
