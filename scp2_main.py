@@ -17,7 +17,7 @@ if __name__ == "__main__":
     # Check if mcp-flight-software folder exist
     if not os.path.isdir("mcp-flight-software"):
        # Doesn't exist, lets check out code first
-        subprocess.call(["git", "clone", "https://github.com/SpaceHummus/mcp-flight-software.git/trunk/","mcp-flight-software"])
+        subprocess.call(["git", "clone", "https://github.com/SpaceHummus/mcp-flight-software.git","mcp-flight-software"])
 
     # Run main code 
     os.chdir("mcp-flight-software")
