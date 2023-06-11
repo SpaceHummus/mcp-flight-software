@@ -21,4 +21,4 @@ if __name__ == "__main__":
 
     # Run main code 
     os.chdir("mcp-flight-software")
-    subprocess.call(["sudo","python","mcp_main.py"])
+    subprocess.call(["sudo","python","main_mcp.py"])
