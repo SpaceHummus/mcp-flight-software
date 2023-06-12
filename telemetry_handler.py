@@ -71,7 +71,7 @@ class TelemetryHandler:
         result = ' '.join(hex_strings)
         logging.debug("Active I2C Devices: " + result)
         
-        return result
+        return [result]
             
     # Gather how long it took to gather all telemetry
     def _get_telemetry_gather_time(self, is_output_header):
