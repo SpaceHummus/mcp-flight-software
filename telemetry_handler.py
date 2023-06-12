@@ -54,6 +54,25 @@ class TelemetryHandler:
             )
             return ['', '', '', ''] # Return empty csv
             
+            
+    # Active I2C Devices
+    def _probe_i2c_devices(self,is_output_header):
+        if is_output_header:
+            # Just output the header, not the data
+            return ['Active I2C Devices [Hex]']
+    
+        # Probe
+        active_i2c_addresses = self.i2c.scan()
+        
+        # Convert to hex
+        hex_strings = [hex(num) for num in active_i2c_addresses]
+
+        # Join the hexadecimal strings into a single string
+        result = ' '.join(hex_strings)
+        logging.debug("Active I2C Devices: " + result)
+        
+        return result
+            
     # Gather how long it took to gather all telemetry
     def _get_telemetry_gather_time(self, is_output_header):
         if is_output_header:
@@ -87,6 +106,7 @@ class TelemetryHandler:
             writer = csv.writer(f)
             row.append(self._get_date_time_state_telemetry(is_output_header))
             row.append(self._get_bme680_telemetry(is_output_header))
+            row.append(self._probe_i2c_devices(is_output_header))
             row.append(self._get_telemetry_gather_time(is_output_header))
             
             # Flatten the list
