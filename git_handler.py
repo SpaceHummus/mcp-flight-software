@@ -65,7 +65,7 @@ class GitHandler:
         self._change_folder_back()
         
         version = "Version Commit Time:" + commit_time_result.decode().strip() + " Hash: " + rev_parse_result.decode().strip()        
-        logging.info("Current repository version " + version)
+        logging.info(version)
         return version
 
 if __name__ == "__main__":
