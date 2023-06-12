@@ -8,6 +8,7 @@ import csv
 import logging
 import time
 from setup_logging import setup_logging
+import os
 
 # This is the main telemetry file 
 TELEMETRY_FILE = 'telemetry.csv'
