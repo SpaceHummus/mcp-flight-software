@@ -67,7 +67,7 @@ class GitHandler:
             # Extract the version string from the command output
             output = result.stdout.strip()
             version = output.split()[-1]
-            logger.info("Current repository version " + version)
+            logging.info("Current repository version " + version)
             return version
         else:
             # Git command execution failed
