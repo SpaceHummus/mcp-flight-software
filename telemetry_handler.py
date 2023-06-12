@@ -2,7 +2,7 @@
 This file contains all telemetry services applicable by this board
 '''
 
-import adafruit_bme680
+import adafruit_bme680 # If can't import try: sudo pip3 install adafruit-circuitpython-bme680
 import board
 import csv
 import logging
