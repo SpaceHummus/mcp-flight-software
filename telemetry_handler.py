@@ -6,6 +6,7 @@ import adafruit_bme680 # If can't import try: sudo pip3 install adafruit-circuit
 import board
 import csv
 from datetime import datetime
+import itertools
 import logging
 import time
 from setup_logging import setup_logging
@@ -87,6 +88,9 @@ class TelemetryHandler:
             row.append(self._get_date_time_state_telemetry(is_output_header))
             row.append(self._get_bme680_telemetry(is_output_header))
             row.append(self._get_telemetry_gather_time(is_output_header))
+            
+            # Flatten the list
+            row = list(itertools.chain.from_iterable(row))
            
             logging.info(row)
             writer.writerow(row)
