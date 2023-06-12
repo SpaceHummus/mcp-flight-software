@@ -43,7 +43,7 @@ class TelemetryHandler:
     
         # Get the actual data
         try:
-            bme680 = adafruit_bme680.Adafruit_BME680_I2C(self.i2c, 118) # Addresses: 0x76 - 118, 0x77 - 119
+            bme680 = adafruit_bme680.Adafruit_BME680_I2C(self.i2c, 118) # Addresses: 0x77 - 119 (default) or 0x76 - 118
             logging.debug("Temperature:%d, Gas: %d ohms, Humidity: %d, Pressure: %d hPa", 
                 bme680.temperature, bme680.gas, bme680.humidity, bme680.pressure)
             return [
