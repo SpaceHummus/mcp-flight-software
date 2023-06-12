@@ -70,9 +70,10 @@ class TelemetryHandler:
         self.collecting_telemetry_start_time = time.time()
         
         # Figure out if the telemetry file exists
-        if os.path.exists(TELEMETRY_FILE):
+        if not os.path.exists(TELEMETRY_FILE):
             # File doesn't exist, you must output header first
             is_output_header = True
+            logging.info("Telemetry file doesn't exist, creating it")
             
         # If starting with header, clean the old file first
         if is_output_header:
