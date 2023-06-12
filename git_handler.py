@@ -51,7 +51,7 @@ class GitHandler:
         self._change_folder_back()
             
     def git_update_code(self):
-        if (_check_internet_connection()):
+        if (self._check_internet_connection()):
             logging.info("We have internet")
             self._update_folder()
         else:

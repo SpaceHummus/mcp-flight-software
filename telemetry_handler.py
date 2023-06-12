@@ -88,6 +88,7 @@ class TelemetryHandler:
             row.append(self._get_bme680_telemetry(is_output_header))
             row.append(self._get_telemetry_gather_time(is_output_header))
            
+            logging.info(row)
             writer.writerow(row)
         
         if is_output_header:
