@@ -60,18 +60,12 @@ class GitHandler:
     def git_get_version(self):
         # Execute git command to retrieve version information
         self._change_to_git_folder()
-        result = subprocess.run(['git', '--version'], capture_output=True, text=True)
+        result = subprocess.check_output(['git', 'describe', '--tags'], stderr=subprocess.STDOUT)
         self._change_folder_back()
         
-        if result.returncode == 0:
-            # Extract the version string from the command output
-            output = result.stdout.strip()
-            version = output.split()[-1]
-            logging.info("Current repository version " + version)
-            return version
-        else:
-            # Git command execution failed
-            return None
+        version = result.decode().strip()        
+        logging.info("Current repository version " + version)
+        return version
 
 if __name__ == "__main__":
     setup_logging()
