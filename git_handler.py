@@ -60,10 +60,11 @@ class GitHandler:
     def git_get_version(self):
         # Execute git command to retrieve version information
         self._change_to_git_folder()
-        result = subprocess.check_output(['git', 'describe', '--tags'], stderr=subprocess.STDOUT)
+        rev_parse_result = subprocess.check_output(['git', 'rev-parse', 'HEAD'], stderr=subprocess.STDOUT)
+        commit_time_result = subprocess.check_output(['git', 'log', '-1','--format=%cd'], stderr=subprocess.STDOUT)
         self._change_folder_back()
         
-        version = result.decode().strip()        
+        version = "Version Commit Time:" + commit_time_result.decode().strip() + " Hash: " + rev_parse_result.decode().strip()        
         logging.info("Current repository version " + version)
         return version
 
