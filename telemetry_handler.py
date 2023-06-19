@@ -49,7 +49,7 @@ class TelemetryHandler:
         # Get the actual data
         try:
             bme680 = adafruit_bme680.Adafruit_BME680_I2C(self.i2c, bme_address) # Addresses: 0x77 - 119 (default) or 0x76 - 118
-            logging.debug("Pressure: %.1f hPa, Temperature:%.1f, Humidity: %.0f%%, Gas: %.0f ohms", 
+            logging.debug("\nPressure: %.1f hPa, Temperature:%.1f, Humidity: %.0f%%, Gas: %.0f ohms", 
                 bme680.pressure, bme680.temperature, bme680.humidity,  bme680.gas)
             return [
                 "{:.1f}".format(bme680.pressure),
@@ -78,7 +78,7 @@ class TelemetryHandler:
 
         # Join the hexadecimal strings into a single string
         result = ' '.join(hex_strings)
-        logging.debug("Active I2C Devices: " + result)
+        logging.debug("\nActive I2C Devices: " + result)
         
         return [result]
             
@@ -122,7 +122,7 @@ class TelemetryHandler:
             # Flatten the list
             row = list(itertools.chain.from_iterable(row))
            
-            logging.info(row)
+            #logging.info(row) # Log the content of the telemetry
             writer.writerow(row)
         
         if is_output_header:
