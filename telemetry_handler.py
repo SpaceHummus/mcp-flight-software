@@ -114,8 +114,8 @@ class TelemetryHandler:
         with open(TELEMETRY_FILE, 'a', encoding='UTF8', newline='') as f:
             writer = csv.writer(f)
             row.append(self._get_date_time_state_telemetry(is_output_header))
-            row.append(self._get_bme680_telemetry(is_output_header), 118)
-            row.append(self._get_bme680_telemetry(is_output_header), 119)
+            row.append(self._get_bme680_telemetry(is_output_header, 118))
+            row.append(self._get_bme680_telemetry(is_output_header, 119))
             row.append(self._probe_i2c_devices(is_output_header))
             row.append(self._get_telemetry_gather_time(is_output_header))
             
