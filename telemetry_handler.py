@@ -36,21 +36,27 @@ class TelemetryHandler:
         return [date_time, state]
     
     # Gather air quality telemetry
-    def _get_bme680_telemetry(self, is_output_header):
+    def _get_bme680_telemetry(self, is_output_header, bme_address=118): # Addresses: 0x77 - 119 (default) or 0x76 - 118
         if is_output_header:
             # Just output the header, not the data
-            return ['BME680_Temperature[C]','BME680_Gas[Ohm]','BME680_Humidity[%]','BME680_Pressure[hPa]']
+            return [
+                'BME680_Pressure[hPa]',
+                'BME680_Temperature[C]',
+                'BME680_Humidity[%]',
+                'BME680_Gas[Ohm]',
+                ]
     
         # Get the actual data
         try:
-            bme680 = adafruit_bme680.Adafruit_BME680_I2C(self.i2c, 118) # Addresses: 0x77 - 119 (default) or 0x76 - 118
-            logging.debug("Temperature:%.1f, Gas: %.0f ohms, Humidity: %.0f, Pressure: %.1f hPa", 
-                bme680.temperature, bme680.gas, bme680.humidity, bme680.pressure)
+            bme680 = adafruit_bme680.Adafruit_BME680_I2C(self.i2c, bme_address) # Addresses: 0x77 - 119 (default) or 0x76 - 118
+            logging.debug("Pressure: %.1f hPa, Temperature:%.1f, Humidity: %.0f%%, Gas: %.0f ohms", 
+                bme680.pressure, bme680.temperature, bme680.humidity,  bme680.gas)
             return [
+                "{:.1f}".format(bme680.pressure),
                 "{:.1f}".format(bme680.temperature), 
-                "{:.0f}".format(bme680.gas), 
                 "{:.0f}".format(bme680.humidity), 
-                "{:.1f}".format(bme680.pressure)]
+                "{:.0f}".format(bme680.gas)
+                ]
         except Exception as e:
             logging.error(
                 f"error while reading from the bme680: \n{e}"
@@ -108,7 +114,8 @@ class TelemetryHandler:
         with open(TELEMETRY_FILE, 'a', encoding='UTF8', newline='') as f:
             writer = csv.writer(f)
             row.append(self._get_date_time_state_telemetry(is_output_header))
-            row.append(self._get_bme680_telemetry(is_output_header))
+            row.append(self._get_bme680_telemetry(is_output_header), 118)
+            row.append(self._get_bme680_telemetry(is_output_header), 119)
             row.append(self._probe_i2c_devices(is_output_header))
             row.append(self._get_telemetry_gather_time(is_output_header))
             
