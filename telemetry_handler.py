@@ -3,6 +3,7 @@ This file contains all telemetry services applicable by this board
 '''
 
 import adafruit_bme680 # If can't import try: sudo pip3 install adafruit-circuitpython-bme680
+import adafruit_sgp30 # If can't import try: sudo pip3 install adafruit-circuitpython-sgp30
 import board
 import csv
 from datetime import datetime
@@ -35,7 +36,7 @@ class TelemetryHandler:
         state = 'Not Implemented'
         return [date_time, state]
     
-    # Gather air quality telemetry
+    # Gather air pressure, temperature and humidity telemetry
     def _get_bme680_telemetry(self, is_output_header, bme_address=118): # Addresses: 0x77 - 119 (default) or 0x76 - 118
         if is_output_header:
             # Just output the header, not the data
@@ -43,26 +44,71 @@ class TelemetryHandler:
                 'BME680_Pressure[hPa]',
                 'BME680_Temperature[C]',
                 'BME680_Humidity[%]',
-                'BME680_Gas[Ohm]',
+                'BME680_Gas[KOhm]',
                 ]
     
         # Get the actual data
         try:
             bme680 = adafruit_bme680.Adafruit_BME680_I2C(self.i2c, bme_address) # Addresses: 0x77 - 119 (default) or 0x76 - 118
-            logging.debug("\nPressure: %5.1f hPa, Temperature:%3.1f, Humidity: %3.0f%%, Gas: %6.0f ohms", 
-                bme680.pressure, bme680.temperature, bme680.humidity,  bme680.gas)
+            logging.debug("\nPressure: %5.1f hPa, Temperature:%3.1f, Humidity: %3.0f%%, Gas: %3.1f KOhms", 
+                bme680.pressure, bme680.temperature, bme680.humidity,  bme680.gas/1000)
             return [
                 "{:<5.1f}".format(bme680.pressure),
                 "{:<3.1f}".format(bme680.temperature), 
                 "{:<3.0f}".format(bme680.humidity), 
-                "{:<6.0f}".format(bme680.gas)
+                "{:<3.1f}".format(bme680.gas/1000)
                 ]
         except Exception as e:
             logging.error(
                 f"error while reading from the bme680: \n{e}"
             )
             return ['', '', '', ''] # Return empty csv
+    
+    # Gather gas composition telemetry, This sensor takes ~10 seconds to warm up
+    # Set temperture and relative humidity for better percision 
+    # More information about operation: https://learn.adafruit.com/adafruit-sgp30-gas-tvoc-eco2-mox-sensor/circuitpython-wiring-test
+    sgp30 = None
+    sgp30_init_time = None
+    def _init_sgp_telemetry(self, celsius=22.1, relative_humidity=44):
+        # Create library object on our I2C port
+        sgp30 = adafruit_sgp30.Adafruit_SGP30(i2c)
+
+        # TDOO: Switch this with adaptive baseline 
+        sgp30.set_iaq_baseline(0x8973, 0x8AAE) 
+        
+        # Calibration is better when temperture and relative humidity is given
+        sgp30.set_iaq_relative_humidity(celsius, relative_humidity)
+        
+        self.sgp30_init_time = time.time()
+        
+    def _get_sgp_telemetry(self, is_output_header):
+        if is_output_header:
+            # Just output the header, not the data
+            return [
+                'SGP_eCO2[ppm]',
+                'SGP_TVOC[ppb]',
+                ]
+        
+        # Make sure that enough time passed from init such that sensor is accurate 
+        time_passed = time.time() - sgp30_init_time
+        if (time_passed < 10):
+            # Not enugh time passed, try again
+            time.sleep(10-time_passed)
+    
+        # Get the actual data
+        try:
             
+            logging.debug("\neCO2: %4.0f ppm, TVOC:%4.1f", 
+                sgp30.eCO2, sgp30.TVOC)
+            return [
+                "{:<4.0f}".format(sgp30.eCO2),
+                "{:<4.0f}".format(sgp30.TVOC) 
+                ]
+        except Exception as e:
+            logging.error(
+                f"error while reading from the SGP: \n{e}"
+            )
+            return ['', ''] # Return empty csv
             
     # Active I2C Devices
     def _probe_i2c_devices(self,is_output_header):
@@ -115,8 +161,10 @@ class TelemetryHandler:
             writer = csv.writer(f)
             row.append(self._get_date_time_state_telemetry(is_output_header))
             row.append(self._get_bme680_telemetry(is_output_header, 118))
+            self._init_sgp_telemetry(22.1, 44)
             row.append(self._get_bme680_telemetry(is_output_header, 119))
             row.append(self._probe_i2c_devices(is_output_header))
+            row.append(self._get_sgp_telemetry(is_output_header))
             row.append(self._get_telemetry_gather_time(is_output_header))
             
             # Flatten the list
