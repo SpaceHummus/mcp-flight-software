@@ -14,8 +14,10 @@ import os
 ###################### Import drivers specific for each sensor ######################
 # Pressure and humidity sensor library.
 from adafruit_ms8607 import MS8607 # If can't import try: sudo pip3 install adafruit-circuitpython-ms8607
-# Air quality sensor telemetry.
+# Air quality sensor library.
 import adafruit_sgp30 # If can't import try: sudo pip3 install adafruit-circuitpython-sgp30
+# Amvient light sensor library.
+import adafruit_tsl2591 # If can't import try: sudo pip3 install adafruit-circuitpython-tsl2591
 
 # This is the main telemetry file 
 TELEMETRY_FILE = 'telemetry.csv'
@@ -75,7 +77,7 @@ class TelemetryHandler:
     # More information about operation: https://learn.adafruit.com/adafruit-sgp30-gas-tvoc-eco2-mox-sensor/circuitpython-wiring-test
     sgp30 = None
     sgp30_init_time = None
-    def _init_sgp_telemetry(self, temperature_celsius=22.1, relative_humidity=44):
+    def _init_sgp30_telemetry(self, temperature_celsius=22.1, relative_humidity=44):
         # Create library object on our I2C port
         self.sgp30 = adafruit_sgp30.Adafruit_SGP30(self.i2c)
 
@@ -87,7 +89,7 @@ class TelemetryHandler:
         
         self.sgp30_init_time = time.time()
         
-    def _get_sgp_telemetry(self, is_output_header):
+    def _get_sgp30_telemetry(self, is_output_header):
         if is_output_header:
             # Just output the header, not the data
             return [
@@ -104,7 +106,7 @@ class TelemetryHandler:
         # Get the actual data
         try:
             
-            logging.debug("\neCO2: %4.0f ppm, TVOC:%4.1f", 
+            logging.debug("\neCO2:%4.0f ppm, TVOC:%4.1f", 
                 self.sgp30.eCO2, self.sgp30.TVOC)
             return [
                 "{:<4.0f}".format(self.sgp30.eCO2),
@@ -112,11 +114,34 @@ class TelemetryHandler:
                 ]
         except Exception as e:
             logging.error(
-                f"error while reading from the SGP: \n{e}"
+                f"error while reading from the SGP30: \n{e}"
             )
             return ['', ''] # Return empty csv
+    
+    # Gather ambient light intensity
+    def _get_tsl2591_telemetry(self, is_output_header):
+        if is_output_header:
+            # Just output the header, not the data
+            return [
+                'TSL_OverallLight[lux]',
+                ]
+    
+        # Get the actual data
+        try:
+            tsl = adafruit_tsl2591.TSL2591(self.i2c)
+            logging.debug("\Overall Light:%4.2f lux", 
+                tsl.lux)
+            return [
+                "{:<4.2f}".format(tsl.lux)
+                ]
+        except Exception as e:
+            logging.error(
+                f"error while reading from the TSL2591: \n{e}"
+            )
+            return [''] # Return empty csv
+    
             
-    # Active I2C Devices
+    # Understand what are the active I2C Devices
     def _probe_i2c_devices(self,is_output_header):
         if is_output_header:
             # Just output the header, not the data
@@ -167,9 +192,10 @@ class TelemetryHandler:
             writer = csv.writer(f)
             row.append(self._get_date_time_state_telemetry(is_output_header))
             row.append(self._get_ms8607_telemetry(is_output_header))
-            self._init_sgp_telemetry(self.temperature_celsius, self.relative_humidity) # Init sensor with the measured data
+            self._init_sgp30_telemetry(self.temperature_celsius, self.relative_humidity) # Init sensor with the measured data
+            row.append(self._get_tsl2591_telemetry(is_output_header))
+            row.append(self._get_sgp30_telemetry(is_output_header))
             row.append(self._probe_i2c_devices(is_output_header))
-            row.append(self._get_sgp_telemetry(is_output_header))
             row.append(self._get_telemetry_gather_time(is_output_header))
             
             # Flatten the list
