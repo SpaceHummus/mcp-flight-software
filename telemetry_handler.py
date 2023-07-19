@@ -92,7 +92,7 @@ class TelemetryHandler:
                 ]
         
         # Make sure that enough time passed from init such that sensor is accurate 
-        time_passed = time.time() - sgp30_init_time
+        time_passed = time.time() - self.sgp30_init_time
         if (time_passed < 10):
             # Not enugh time passed, try again
             time.sleep(10-time_passed)
