@@ -85,7 +85,8 @@ class TelemetryHandler:
         self.sgp30.set_iaq_baseline(0x8973, 0x8AAE) 
         
         # Calibration is better when temperature and relative humidity is given
-        if isinstance(temperature_celsius, (int, float)):
+        if (isinstance(temperature_celsius, (int, float)) and 
+            relative_humidity>0): # If no telemetry was provided, relative_humidity will be -1. This clause prevents us from initializing using bad data
             logging.debug("Initializing SGP30 with temperature and relative humidity.\nTemperature:%3.1f C, Relative Humidity: %3.0f%%", 
                 temperature_celsius, relative_humidity)
             self.sgp30.set_iaq_relative_humidity(
