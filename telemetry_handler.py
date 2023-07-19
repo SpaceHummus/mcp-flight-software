@@ -62,7 +62,7 @@ class TelemetryHandler:
                 ]
         except Exception as e:
             logging.error(
-                f"error while reading from the bme680: \n{e}"
+                f"error while reading from the MS8607: \n{e}"
             )
             return ['', '', ''] # Return empty csv
     
@@ -162,9 +162,8 @@ class TelemetryHandler:
         with open(TELEMETRY_FILE, 'a', encoding='UTF8', newline='') as f:
             writer = csv.writer(f)
             row.append(self._get_date_time_state_telemetry(is_output_header))
-            row.append(self._get_bme680_telemetry(is_output_header, 118))
-            self._init_sgp_telemetry(22.1, 44)
-            row.append(self._get_bme680_telemetry(is_output_header, 119))
+            row.append(self._get_ms8607_telemetry(is_output_header))
+            self._init_sgp_telemetry(22.1, 44) # TODO: change these values to temperture and humidity measured
             row.append(self._probe_i2c_devices(is_output_header))
             row.append(self._get_sgp_telemetry(is_output_header))
             row.append(self._get_telemetry_gather_time(is_output_header))
