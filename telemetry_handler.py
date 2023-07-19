@@ -106,9 +106,10 @@ class TelemetryHandler:
         
         # Make sure that enough time passed from init such that sensor is accurate 
         time_passed = time.time() - self.sgp30_init_time
-        if (time_passed < 15):
+        min_wait_time_sec = 12
+        if (time_passed < min_wait_time_sec):
             # Not enugh time passed, try again
-            time.sleep(15-time_passed)
+            time.sleep(min_wait_time_sec-time_passed)
     
         # Get the actual data
         try:
