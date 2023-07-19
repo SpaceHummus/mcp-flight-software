@@ -10,6 +10,11 @@ import subprocess
 import sys
 
 if __name__ == "__main__":
+    # Print the options for this script
+    print("Script Options:")
+    print("--fresh will check out a fresh copy of the code while deleting the old copy")
+    print("--loop will run main_mcp.py over and over again use ctrl+C to break"); 
+
     # Get the current directory of the Python script
     current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -19,8 +24,6 @@ if __name__ == "__main__":
     # Check if "--fresh" flag was raised, if it did, user would like to delete existing folder
     if "--fresh" in sys.argv:
         subprocess.call(["sudo","rm","-rf","mcp-flight-software"])
-    else:
-        print("If you would like to force a fresh copy of 'mcp-flight-software', run 'python scp2_main --fresh'")
     
     # Check if mcp-flight-software folder exist
     if not os.path.isdir("mcp-flight-software"):
@@ -30,6 +33,8 @@ if __name__ == "__main__":
     # Run main code 
     os.chdir("mcp-flight-software")
     return_code = subprocess.call(["sudo","python","main_mcp.py"])
+    while ("--loop" in sys.argv and return_code == 0):
+        return_code = subprocess.call(["sudo","python","main_mcp.py"]) # Loop forever if needed
     
     # If error occured, try updating
     if return_code != 0:
