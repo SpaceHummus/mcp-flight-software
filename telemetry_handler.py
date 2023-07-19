@@ -41,20 +41,24 @@ class TelemetryHandler:
         return [date_time, state]
     
     # Gather air pressure, temperature and humidity telemetry
+    temperature_celsius = -1
+    relative_humidity = -1
     def _get_ms8607_telemetry(self, is_output_header): 
         if is_output_header:
             # Just output the header, not the data
             return [
                 'MS8670_Pressure[hPa]',
                 'MS8670_Temperature[C]',
-                'MS8670_Humidity[%]',
+                'MS8670_RelativeHumidity[%]',
                 ]
     
         # Get the actual data
         try:
             ms8607 = MS8607(self.i2c)
-            logging.debug("\nPressure: %5.1f hPa, Temperature:%3.1f, Humidity: %3.0f%%", 
+            logging.debug("\nPressure: %5.1f hPa, Temperature:%3.1f, Relative Humidity: %3.0f%%", 
                 ms8607.pressure, ms8607.temperature, ms8607.relative_humidity)
+            temperature_celsius = ms8607.temperature
+            relative_humidity = ms8607.relative_humidity
             return [
                 "{:<5.1f}".format(ms8607.pressure),
                 "{:<3.1f}".format(ms8607.temperature), 
@@ -67,18 +71,18 @@ class TelemetryHandler:
             return ['', '', ''] # Return empty csv
     
     # Gather gas composition telemetry, This sensor takes ~10 seconds to warm up
-    # Set temperture and relative humidity for better percision 
+    # Set temperature and relative humidity for better percision 
     # More information about operation: https://learn.adafruit.com/adafruit-sgp30-gas-tvoc-eco2-mox-sensor/circuitpython-wiring-test
     sgp30 = None
     sgp30_init_time = None
-    def _init_sgp_telemetry(self, celsius=22.1, relative_humidity=44):
+    def _init_sgp_telemetry(self, temperature_celsius=22.1, relative_humidity=44):
         # Create library object on our I2C port
         self.sgp30 = adafruit_sgp30.Adafruit_SGP30(self.i2c)
 
         # TDOO: Switch this with adaptive baseline 
         self.sgp30.set_iaq_baseline(0x8973, 0x8AAE) 
         
-        # Calibration is better when temperture and relative humidity is given
+        # Calibration is better when temperature and relative humidity is given
         self.sgp30.set_iaq_relative_humidity(celsius, relative_humidity)
         
         self.sgp30_init_time = time.time()
@@ -163,7 +167,7 @@ class TelemetryHandler:
             writer = csv.writer(f)
             row.append(self._get_date_time_state_telemetry(is_output_header))
             row.append(self._get_ms8607_telemetry(is_output_header))
-            self._init_sgp_telemetry(22.1, 44) # TODO: change these values to temperture and humidity measured
+            self._init_sgp_telemetry(self.temperature_celsius, self.relative_humidity) # Init sensor with the measured data
             row.append(self._probe_i2c_devices(is_output_header))
             row.append(self._get_sgp_telemetry(is_output_header))
             row.append(self._get_telemetry_gather_time(is_output_header))
