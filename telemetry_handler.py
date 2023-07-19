@@ -85,7 +85,7 @@ class TelemetryHandler:
         self.sgp30.set_iaq_baseline(0x8973, 0x8AAE) 
         
         # Calibration is better when temperature and relative humidity is given
-        self.sgp30.set_iaq_relative_humidity(celsius, relative_humidity)
+        self.sgp30.set_iaq_relative_humidity(temperature_celsius, relative_humidity)
         
         self.sgp30_init_time = time.time()
         
