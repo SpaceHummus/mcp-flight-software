@@ -101,10 +101,10 @@ class TelemetryHandler:
         try:
             
             logging.debug("\neCO2: %4.0f ppm, TVOC:%4.1f", 
-                sgp30.eCO2, sgp30.TVOC)
+                self.sgp30.eCO2, self.sgp30.TVOC)
             return [
-                "{:<4.0f}".format(sgp30.eCO2),
-                "{:<4.0f}".format(sgp30.TVOC) 
+                "{:<4.0f}".format(self.sgp30.eCO2),
+                "{:<4.0f}".format(self.sgp30.TVOC) 
                 ]
         except Exception as e:
             logging.error(
