@@ -73,13 +73,13 @@ class TelemetryHandler:
     sgp30_init_time = None
     def _init_sgp_telemetry(self, celsius=22.1, relative_humidity=44):
         # Create library object on our I2C port
-        sgp30 = adafruit_sgp30.Adafruit_SGP30(self.i2c)
+        self.sgp30 = adafruit_sgp30.Adafruit_SGP30(self.i2c)
 
         # TDOO: Switch this with adaptive baseline 
-        sgp30.set_iaq_baseline(0x8973, 0x8AAE) 
+        self.sgp30.set_iaq_baseline(0x8973, 0x8AAE) 
         
         # Calibration is better when temperture and relative humidity is given
-        sgp30.set_iaq_relative_humidity(celsius, relative_humidity)
+        self.sgp30.set_iaq_relative_humidity(celsius, relative_humidity)
         
         self.sgp30_init_time = time.time()
         
