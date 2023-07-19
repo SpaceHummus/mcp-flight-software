@@ -59,8 +59,8 @@ class TelemetryHandler:
             ms8607 = MS8607(self.i2c)
             logging.debug("\nPressure: %5.1f hPa, Temperature:%3.1f[C], Relative Humidity: %3.0f%%", 
                 ms8607.pressure, ms8607.temperature, ms8607.relative_humidity)
-            temperature_celsius = ms8607.temperature
-            relative_humidity = ms8607.relative_humidity
+            self.temperature_celsius = ms8607.temperature
+            self.relative_humidity = ms8607.relative_humidity
             return [
                 "{:<5.1f}".format(ms8607.pressure),
                 "{:<3.1f}".format(ms8607.temperature), 
@@ -87,7 +87,7 @@ class TelemetryHandler:
         # Calibration is better when temperature and relative humidity is given
         if isinstance(temperature_celsius, (int, float)):
             logging.debug("Initializing SGP30 with temperature and relative humidity.\nTemperature:%3.1f[C], Relative Humidity: %3.0f%%", 
-                temperature_celsius,relative_humidity)
+                temperature_celsius, relative_humidity)
             self.sgp30.set_iaq_relative_humidity(
                 celsius=temperature_celsius, 
                 relative_humidity=relative_humidity
