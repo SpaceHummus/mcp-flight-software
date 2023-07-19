@@ -2,8 +2,6 @@
 This file contains all telemetry services applicable by this board
 '''
 
-import adafruit_bme680 # If can't import try: sudo pip3 install adafruit-circuitpython-bme680
-import adafruit_sgp30 # If can't import try: sudo pip3 install adafruit-circuitpython-sgp30
 import board
 import csv
 from datetime import datetime
@@ -12,6 +10,12 @@ import logging
 import time
 from setup_logging import setup_logging
 import os
+
+###################### Import drivers specific for each sensor ######################
+# Pressure and humidity sensor library.
+from adafruit_ms8607 import MS8607 # If can't import try: sudo pip3 install adafruit-circuitpython-ms8607
+# Air quality sensor telemetry.
+import adafruit_sgp30 # If can't import try: sudo pip3 install adafruit-circuitpython-sgp30
 
 # This is the main telemetry file 
 TELEMETRY_FILE = 'telemetry.csv'
@@ -37,32 +41,30 @@ class TelemetryHandler:
         return [date_time, state]
     
     # Gather air pressure, temperature and humidity telemetry
-    def _get_bme680_telemetry(self, is_output_header, bme_address=118): # Addresses: 0x77 - 119 (default) or 0x76 - 118
+    def _get_ms8607_telemetry(self, is_output_header): 
         if is_output_header:
             # Just output the header, not the data
             return [
-                'BME680_Pressure[hPa]',
-                'BME680_Temperature[C]',
-                'BME680_Humidity[%]',
-                'BME680_Gas[KOhm]',
+                'MS8670_Pressure[hPa]',
+                'MS8670_Temperature[C]',
+                'MS8670_Humidity[%]',
                 ]
     
         # Get the actual data
         try:
-            bme680 = adafruit_bme680.Adafruit_BME680_I2C(self.i2c, bme_address) # Addresses: 0x77 - 119 (default) or 0x76 - 118
+            ms8607 = MS8607(i2c)
             logging.debug("\nPressure: %5.1f hPa, Temperature:%3.1f, Humidity: %3.0f%%, Gas: %3.1f KOhms", 
-                bme680.pressure, bme680.temperature, bme680.humidity,  bme680.gas/1000)
+                ms8607.pressure, ms8607.temperature, ms8607.humidity)
             return [
-                "{:<5.1f}".format(bme680.pressure),
-                "{:<3.1f}".format(bme680.temperature), 
-                "{:<3.0f}".format(bme680.humidity), 
-                "{:<3.1f}".format(bme680.gas/1000)
+                "{:<5.1f}".format(ms8607.pressure),
+                "{:<3.1f}".format(ms8607.temperature), 
+                "{:<3.0f}".format(ms8607.humidity), 
                 ]
         except Exception as e:
             logging.error(
                 f"error while reading from the bme680: \n{e}"
             )
-            return ['', '', '', ''] # Return empty csv
+            return ['', '', ''] # Return empty csv
     
     # Gather gas composition telemetry, This sensor takes ~10 seconds to warm up
     # Set temperture and relative humidity for better percision 
