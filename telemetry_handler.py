@@ -106,7 +106,7 @@ class TelemetryHandler:
         
         # Make sure that enough time passed from init such that sensor is accurate 
         time_passed = time.time() - self.sgp30_init_time
-        min_wait_time_sec = 12
+        min_wait_time_sec = 13
         if (time_passed < min_wait_time_sec):
             # Not enugh time passed, try again
             time.sleep(min_wait_time_sec-time_passed)
@@ -137,10 +137,10 @@ class TelemetryHandler:
         # Get the actual data
         try:
             tsl = adafruit_tsl2591.TSL2591(self.i2c)
-            logging.debug("Overall Light:%4.2f lux", 
+            logging.debug("Overall Light:%5.2f lux", 
                 tsl.lux)
             return [
-                "{:<4.2f}".format(tsl.lux)
+                "{:<5.2f}".format(tsl.lux)
                 ]
         except Exception as e:
             logging.error(
