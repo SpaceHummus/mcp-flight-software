@@ -52,7 +52,7 @@ class TelemetryHandler:
     
         # Get the actual data
         try:
-            ms8607 = MS8607(i2c)
+            ms8607 = MS8607(self.i2c)
             logging.debug("\nPressure: %5.1f hPa, Temperature:%3.1f, Humidity: %3.0f%%, Gas: %3.1f KOhms", 
                 ms8607.pressure, ms8607.temperature, ms8607.humidity)
             return [
@@ -73,7 +73,7 @@ class TelemetryHandler:
     sgp30_init_time = None
     def _init_sgp_telemetry(self, celsius=22.1, relative_humidity=44):
         # Create library object on our I2C port
-        sgp30 = adafruit_sgp30.Adafruit_SGP30(i2c)
+        sgp30 = adafruit_sgp30.Adafruit_SGP30(self.i2c)
 
         # TDOO: Switch this with adaptive baseline 
         sgp30.set_iaq_baseline(0x8973, 0x8AAE) 
