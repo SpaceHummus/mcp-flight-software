@@ -53,7 +53,7 @@ class TelemetryHandler:
         # Get the actual data
         try:
             ms8607 = MS8607(self.i2c)
-            logging.debug("\nPressure: %5.1f hPa, Temperature:%3.1f, Humidity: %3.0f%%, Gas: %3.1f KOhms", 
+            logging.debug("\nPressure: %5.1f hPa, Temperature:%3.1f, Humidity: %3.0f%%", 
                 ms8607.pressure, ms8607.temperature, ms8607.relative_humidity)
             return [
                 "{:<5.1f}".format(ms8607.pressure),
