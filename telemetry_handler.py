@@ -57,7 +57,7 @@ class TelemetryHandler:
         # Get the actual data
         try:
             ms8607 = MS8607(self.i2c)
-            logging.debug("\nPressure: %5.1f hPa, Temperature:%3.1f C, Relative Humidity: %3.0f%%", 
+            logging.debug("\nPressure: %5.1fhPa, Temperature: %3.1fC, Relative Humidity: %3.0f%%", 
                 ms8607.pressure, ms8607.temperature, ms8607.relative_humidity)
             self.temperature_celsius = ms8607.temperature
             self.relative_humidity = ms8607.relative_humidity
@@ -87,7 +87,7 @@ class TelemetryHandler:
         # Calibration is better when temperature and relative humidity is given
         if (isinstance(temperature_celsius, (int, float)) and 
             relative_humidity>0): # If no telemetry was provided, relative_humidity will be -1. This clause prevents us from initializing using bad data
-            logging.debug("Initializing SGP30 with temperature and relative humidity.\nTemperature:%3.1f C, Relative Humidity: %3.0f%%", 
+            logging.debug("Initializing SGP30 with temperature and relative humidity.\nTemperature: %3.1fC, Relative Humidity: %3.0f%%", 
                 temperature_celsius, relative_humidity)
             self.sgp30.set_iaq_relative_humidity(
                 celsius=temperature_celsius, 
@@ -106,7 +106,7 @@ class TelemetryHandler:
         
         # Make sure that enough time passed from init such that sensor is accurate 
         time_passed = time.time() - self.sgp30_init_time
-        min_wait_time_sec = 13
+        min_wait_time_sec = 15
         if (time_passed < min_wait_time_sec):
             # Not enugh time passed, try again
             time.sleep(min_wait_time_sec-time_passed)
@@ -114,7 +114,7 @@ class TelemetryHandler:
         # Get the actual data
         try:
             
-            logging.debug("\neCO2:%4.0f ppm, TVOC:%4.1f", 
+            logging.debug("\neCO2: %4.0fppm, TVOC: %4.1f", 
                 self.sgp30.eCO2, self.sgp30.TVOC)
             return [
                 "{:<4.0f}".format(self.sgp30.eCO2),
@@ -137,7 +137,7 @@ class TelemetryHandler:
         # Get the actual data
         try:
             tsl = adafruit_tsl2591.TSL2591(self.i2c)
-            logging.debug("Overall Light:%5.2f lux", 
+            logging.debug("Overall Light: %5.2flux", 
                 tsl.lux)
             return [
                 "{:<5.2f}".format(tsl.lux)
