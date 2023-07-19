@@ -91,15 +91,15 @@ class TelemetryHandler:
         if is_output_header:
             # Just output the header, not the data
             return [
-                'SGP_eCO2[ppm]',
-                'SGP_TVOC[ppb]',
+                'SGP30_eCO2[ppm]',
+                'SGP30_TVOC[ppb]',
                 ]
         
         # Make sure that enough time passed from init such that sensor is accurate 
         time_passed = time.time() - self.sgp30_init_time
-        if (time_passed < 10):
+        if (time_passed < 15):
             # Not enugh time passed, try again
-            time.sleep(10-time_passed)
+            time.sleep(15-time_passed)
     
         # Get the actual data
         try:
