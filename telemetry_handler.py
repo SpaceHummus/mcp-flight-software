@@ -54,11 +54,11 @@ class TelemetryHandler:
         try:
             ms8607 = MS8607(self.i2c)
             logging.debug("\nPressure: %5.1f hPa, Temperature:%3.1f, Humidity: %3.0f%%, Gas: %3.1f KOhms", 
-                ms8607.pressure, ms8607.temperature, ms8607.humidity)
+                ms8607.pressure, ms8607.temperature, ms8607.relative_humidity)
             return [
                 "{:<5.1f}".format(ms8607.pressure),
                 "{:<3.1f}".format(ms8607.temperature), 
-                "{:<3.0f}".format(ms8607.humidity), 
+                "{:<3.0f}".format(ms8607.relative_humidity), 
                 ]
         except Exception as e:
             logging.error(
