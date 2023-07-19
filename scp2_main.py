@@ -7,6 +7,7 @@ This code will check out mcp (if the folder doesn't exist), and run mcp_main.py
 import os
 import shutil
 import subprocess
+import sys
 
 if __name__ == "__main__":
     # Get the current directory of the Python script
@@ -14,6 +15,12 @@ if __name__ == "__main__":
 
     # Change path to this file's directory
     os.chdir(current_dir)
+    
+    # Check if "--fresh" flag was raised, if it did, user would like to delete existing folder
+    if "--fresh" in sys.argv:
+        subprocess.call(["sudo","rm","-rf","mcp-flight-software"])
+    else:
+        print("If you would like to force a fresh copy of 'mcp-flight-software', run 'python scp2_main --fresh'")
     
     # Check if mcp-flight-software folder exist
     if not os.path.isdir("mcp-flight-software"):
