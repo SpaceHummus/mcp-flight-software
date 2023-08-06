@@ -32,6 +32,7 @@ class TelemetryHandler:
         self.i2c = board.I2C()
         
 ###################### Private Functions to Collect Telemetry ######################    
+    # RTC: I2C Address 0x68
     
     # Gather general information about the date/time and state
     def _get_date_time_state_telemetry(self, is_output_header):
@@ -45,6 +46,7 @@ class TelemetryHandler:
         return [date_time, state]
     
     # Gather air pressure, temperature and humidity telemetry
+    # I2C Address 0x40, 0x76
     temperature_celsius = -1
     relative_humidity = -1
     def _get_ms8607_telemetry(self, is_output_header): 
@@ -77,6 +79,7 @@ class TelemetryHandler:
     # Gather gas composition telemetry, This sensor takes ~10 seconds to warm up
     # Set temperature and relative humidity for better percision 
     # More information about operation: https://learn.adafruit.com/adafruit-sgp30-gas-tvoc-eco2-mox-sensor/circuitpython-wiring-test
+    # I2C Address 0x58
     sgp30 = None
     sgp30_init_time = None
     def _init_sgp30_telemetry(self, temperature_celsius=22.1, relative_humidity=44):
@@ -129,6 +132,7 @@ class TelemetryHandler:
             return ['', ''] # Return empty csv
     
     # Gather ambient light intensity
+    # I2C Address 0x28 and 0x29
     def _get_tsl2591_telemetry(self, is_output_header):
         if is_output_header:
             # Just output the header, not the data
@@ -150,7 +154,8 @@ class TelemetryHandler:
             )
             return [''] # Return empty csv
     
-    # Gather current and power consumption
+    # Gather current and power consumption.
+    # I2C Address 0x40
     def _probe_ina3221_telemetry(self, is_output_header):
         if is_output_header:
             # Just output the header, not the data
