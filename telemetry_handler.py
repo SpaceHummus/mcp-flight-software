@@ -16,8 +16,10 @@ import os
 from adafruit_ms8607 import MS8607 # If can't import try: sudo pip3 install adafruit-circuitpython-ms8607
 # Air quality sensor library.
 import adafruit_sgp30 # If can't import try: sudo pip3 install adafruit-circuitpython-sgp30
-# Amvient light sensor library.
+# Ambient light sensor library.
 import adafruit_tsl2591 # If can't import try: sudo pip3 install adafruit-circuitpython-tsl2591
+# Current sensor
+from barbudor_ina3221.lite import INA3221 # If can't import try: sudo pip3 install barbudor-circuitpython-ina3221
 
 # This is the main telemetry file 
 TELEMETRY_FILE = 'telemetry.csv'
@@ -68,7 +70,7 @@ class TelemetryHandler:
                 ]
         except Exception as e:
             logging.error(
-                f"error while reading from the MS8607: \n{e}"
+                f"error while reading from MS8607: \n{e}"
             )
             return ['', '', ''] # Return empty csv
     
@@ -122,7 +124,7 @@ class TelemetryHandler:
                 ]
         except Exception as e:
             logging.error(
-                f"error while reading from the SGP30: \n{e}"
+                f"error while reading from SGP30: \n{e}"
             )
             return ['', ''] # Return empty csv
     
@@ -144,10 +146,53 @@ class TelemetryHandler:
                 ]
         except Exception as e:
             logging.error(
-                f"error while reading from the TSL2591: \n{e}"
+                f"error while reading from TSL2591: \n{e}"
             )
             return [''] # Return empty csv
     
+    # Gather current and power consumption
+    def _probe_ina3221_telemetry(self, is_output_header):
+        if is_output_header:
+            # Just output the header, not the data
+            return [
+                'INA_Current1[mA]','INA_Voltage1[V]','INA_Current2[mA]','INA_Voltage2[V]','INA_Current3[mA]','INA_Voltage3[V]',
+                ]
+                
+        # Get the actual data
+        try:
+            # Init device
+            ina3221 = INA3221(self.i2c, shunt_resistor=(0.05,0.05,0.05))
+            
+            # Enable all 3 channels.
+            ina3221.enable_channel(1)
+            ina3221.enable_channel(2)
+            ina3221.enable_channel(3)
+            
+            # Read data
+            current1 = ina3221.current(1)*1000
+            voltage1 = ina3221.bus_voltage(1)
+            current2 = ina3221.current(2)*1000
+            voltage2 = ina3221.bus_voltage(2)
+            current3 = ina3221.current(3)*1000
+            voltage3 = ina3221.bus_voltage(3)
+            
+            # Log and return
+            logging.debug("Ch1: Current: %3.0f[mA], Voltage: %1.2f[V]",current1,voltage1)
+            logging.debug("Ch2: Current: %3.0f[mA], Voltage: %1.2f[V]",current2,voltage2)
+            logging.debug("Ch3: Current: %3.0f[mA], Voltage: %1.2f[V]",current3,voltage3)
+            return [
+                "{:<3.0f}".format(current1),
+                "{:<1.2f}".format(voltage1),
+                "{:<3.0f}".format(current2),
+                "{:<1.2f}".format(voltage2),
+                "{:<3.0f}".format(current3),
+                "{:<1.2f}".format(voltage3),
+                ]
+        except Exception as e:
+            logging.error(
+                f"error while reading from INA3221: \n{e}"
+            )
+            return [''] # Return empty csv
             
     # Understand what are the active I2C Devices
     def _probe_i2c_devices(self,is_output_header):
@@ -202,6 +247,7 @@ class TelemetryHandler:
             row.append(self._get_ms8607_telemetry(is_output_header))
             self._init_sgp30_telemetry(self.temperature_celsius, self.relative_humidity) # Init sensor with the measured data
             row.append(self._get_tsl2591_telemetry(is_output_header))
+            row.append(self._probe_ina3221_telemetry(is_output_header))
             row.append(self._get_sgp30_telemetry(is_output_header))
             row.append(self._probe_i2c_devices(is_output_header))
             row.append(self._get_telemetry_gather_time(is_output_header))
