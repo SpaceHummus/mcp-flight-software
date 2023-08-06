@@ -83,23 +83,27 @@ class TelemetryHandler:
     sgp30 = None
     sgp30_init_time = None
     def _init_sgp30_telemetry(self, temperature_celsius=22.1, relative_humidity=44):
-        # Create library object on our I2C port
-        self.sgp30 = adafruit_sgp30.Adafruit_SGP30(self.i2c)
-
-        # TDOO: Switch this with adaptive baseline 
-        self.sgp30.set_iaq_baseline(0x8973, 0x8AAE) 
-        
-        # Calibration is better when temperature and relative humidity is given
-        if (isinstance(temperature_celsius, (int, float)) and 
-            relative_humidity>0): # If no telemetry was provided, relative_humidity will be -1. This clause prevents us from initializing using bad data
-            logging.debug("Initializing SGP30 with temperature and relative humidity.\nTemperature: %3.1f[C], Relative Humidity: %3.0f%%", 
-                temperature_celsius, relative_humidity)
-            self.sgp30.set_iaq_relative_humidity(
-                celsius=temperature_celsius, 
-                relative_humidity=relative_humidity
-                )
-        
         self.sgp30_init_time = time.time()
+        try:
+            # Create library object on our I2C port
+            self.sgp30 = adafruit_sgp30.Adafruit_SGP30(self.i2c)
+
+            # TDOO: Switch this with adaptive baseline 
+            self.sgp30.set_iaq_baseline(0x8973, 0x8AAE) 
+            
+            # Calibration is better when temperature and relative humidity is given
+            if (isinstance(temperature_celsius, (int, float)) and 
+                relative_humidity>0): # If no telemetry was provided, relative_humidity will be -1. This clause prevents us from initializing using bad data
+                logging.debug("Initializing SGP30 with temperature and relative humidity.\nTemperature: %3.1f[C], Relative Humidity: %3.0f%%", 
+                    temperature_celsius, relative_humidity)
+                self.sgp30.set_iaq_relative_humidity(
+                    celsius=temperature_celsius, 
+                    relative_humidity=relative_humidity
+                    )
+        except Exception as e:
+            logging.error(
+                f"error while initializing SGP30: \n{e}"
+            )
         
     def _get_sgp30_telemetry(self, is_output_header):
         if is_output_header:
