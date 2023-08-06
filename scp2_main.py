@@ -35,6 +35,9 @@ if __name__ == "__main__":
     return_code = subprocess.call(["sudo","python","main_mcp.py"])
     while ("--loop" in sys.argv and return_code == 0):
         return_code = subprocess.call(["sudo","python","main_mcp.py"]) # Loop forever if needed
+        
+    # Run I2C scan to know what devices are connected
+    subprocess.call(["sudo","i2cdetect","-y","1"])
     
     # If error occured, try updating
     if return_code != 0:
