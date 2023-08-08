@@ -6,6 +6,7 @@ import board
 import csv
 from datetime import datetime
 import itertools
+import led_service
 import logging
 import time
 from setup_logging import setup_logging
@@ -34,16 +35,16 @@ class TelemetryHandler:
 ###################### Private Functions to Collect Telemetry ######################    
     # RTC: I2C Address 0x68
     
-    # Gather general information about the date/time and state
+    # Gather general information about the date/time and led mode
     def _get_date_time_state_telemetry(self, is_output_header):
         if is_output_header:
             # Just output the header, not the data
-            return ['Date & Time','Logic State']
+            return ['Date & Time','LED Mode']
         
         now = datetime.now()  # current date and time
         date_time = now.strftime("%Y-%m-%d %H:%M:%S")
-        state = 'Not Implemented'
-        return [date_time, state]
+        mode, *_  = led_service.get_led_mode()
+        return [date_time, mode]
     
     # Gather air pressure, temperature and humidity telemetry
     # I2C Address 0x40, 0x76
