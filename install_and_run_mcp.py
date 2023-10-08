@@ -1,7 +1,5 @@
 '''
-This file supports backward compatability and will be depricated
-RPi automatically runs this code at start-up.
-This code will check out mcp (if the folder doesn't exist), and run mcp_main.py
+To insall mcp, place this file in any folder. It will download and run what is needed
 '''
 
 import os
@@ -45,9 +43,9 @@ if __name__ == "__main__":
         subprocess.call(["git", "pull", "--force"])
     
     # Update self
-    if os.path.exists("scp2_main.py"):
+    if os.path.exists("install_and_run_mcp.py"):
         print("Preforming self update")
-        dest_path = "../scp2_main.py"
+        dest_path = "../install_and_run_mcp.py"
         if os.path.exists(dest_path):
             os.remove(dest_path)
-        shutil.move("scp2_main.py", "../")
+        shutil.move("install_and_run_mcp.py", "../")
