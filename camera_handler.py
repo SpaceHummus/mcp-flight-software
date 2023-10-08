@@ -70,7 +70,7 @@ class CameraHandler:
         ):
         
         # Generate filepath
-        new_file_name="{0}{0:04d}_F{1:04d}_{2}.jpg".format(
+        new_file_name="{0}{1:04d}_F{2:04d}_{3}.jpg".format(
             folder_path,
             self._take_pic_increment_index_by_one(),
             self.focus,
