@@ -35,13 +35,12 @@ if __name__ == "__main__":
     def take_picture_with_led(mode_name,r,g,b,near_or_far):
         set_led_mode(mode_name,r,g,b)
         camera.take_pic(focus=near_or_far,is_use_full_resolution=IS_USE_FULL_RESOLUTION)
-    
     take_picture_with_led("OFF",0,0,0,NEAR_FOCUS)
     take_picture_with_led("RED",255,0,0,NEAR_FOCUS)
-    take_picture_with_led("GREEN",255,0,0,NEAR_FOCUS)
-    take_picture_with_led("BLUE",255,0,0,NEAR_FOCUS)
-    take_picture_with_led("WHITE_NEAR",255,0,0,NEAR_FOCUS)
-    take_picture_with_led("WHITE_FAR",255,0,0,FAR_FOCUS)
+    take_picture_with_led("GREEN",0,255,0,NEAR_FOCUS)
+    take_picture_with_led("BLUE",0,0,255,NEAR_FOCUS)
+    take_picture_with_led("WHITE_NEAR",255,255,255,NEAR_FOCUS)
+    take_picture_with_led("WHITE_FAR",255,255,255,FAR_FOCUS)
     take_picture_with_led("OFF",0,0,0,FAR_FOCUS)
     
     # Finally, update code for next run
