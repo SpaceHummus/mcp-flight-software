@@ -10,26 +10,8 @@ import threading
 from pathlib import Path
 
 
-# where do we store the images localy
-IMAGES_DIR = "images/"
-
 def run_camera(name):
     os.system("raspistill -t 2000")
-
-
-# check if the image file name already exists, if yes, generate a new one
-def fix_file_path(file_path: str) -> str:
-    file = Path(file_path)
-    if not file.exists():
-        return str(file)
-    year = 10
-    name = file.name[2:]
-    while year<100: # up to year 99 (2099)
-        new_path = file.parent / f"{year}{name}"
-        if not new_path.exists():
-            return str(new_path)
-        year +=1
-    return str(file.parent / f"{year}{name}")
 
 # convert board pin numbering to bcm numbering
 def board3bcm(pin):
@@ -116,9 +98,17 @@ class CameraHandler:
         
     # This is an auxilary function to get next image index from file, and increase that number by 1
     def _take_pic_increment_index_by_one(self):
+        # Get the absolute path of the current Python file
+        current_file_path = os.path.abspath(__file__)
+
+        # Get the directory (folder) of the current Python file
+        current_folder = os.path.dirname(current_file_path)
+        file_path = Path(current_folder + "/" + "pic_number.txt")
+        
+        # Get next number from file
         try:
             # Try to open the file for reading
-            with open(filename, 'r') as file:
+            with open(file_path, 'r') as file:
                 # Read the current number from the file
                 n = int(file.read().strip())
                 
@@ -129,13 +119,14 @@ class CameraHandler:
         
         # Increment the number and write it back to the file
         try:
-            with open(filename, 'w') as file:
+            with open(file_path, 'w') as file:
                 file.write(str(n + 1))
         except Exception as e:
             logging.warning(f"Error writing to file: {e}")
 
         # Return the original number (before incrementing)
         return n
+
 
 if __name__ == "__main__":
     camera = CameraHandler()
