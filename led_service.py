@@ -30,7 +30,7 @@ def set_led_mode(new_r, new_g, new_b, new_mode_name):
         
         # If new mode is off, turn off LED power by switching off the GPIO
         if new_mode_name == "off":
-        GPIO.output(LED_ENABLE_PIN, False)# Turn Neo pixel enable line
+            GPIO.output(LED_ENABLE_PIN, False)# Turn Neo pixel enable line
         
         # Nothing more to do, return
         return
