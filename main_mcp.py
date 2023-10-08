@@ -57,7 +57,7 @@ if __name__ == "__main__":
         tlm.gather_telemetry()
         
     # Collect artifacts and zip them
-    with zipfile.ZipFile("artifacts", 'w', zipfile.ZIP_DEFLATED) as zipf:
+    with zipfile.ZipFile("artifacts.zip", 'w', zipfile.ZIP_DEFLATED) as zipf:
         for file in artifacts_files_paths:
             zipf.write(file, os.path.basename(file))
     
