@@ -83,10 +83,10 @@ class CameraHandler:
         if is_use_full_resolution:
             cmd = "raspistill -o %s" %new_file_name
         else:
-            cmd = "raspistill -w 640 -h 480 -n -t 100 -q 20 -e jpg -th none -o %s" %file_name
+            cmd = "raspistill -w 640 -h 480 -n -t 100 -q 20 -e jpg -th none -o %s" %new_file_name
         
         # Take the picture
-        logging.info("taking picture, file path: %s",file_name)
+        logging.info("taking picture, file path: %s",new_file_name)
         logging.debug("Command: %s",cmd)
         print(cmd)
         os.system(cmd)
