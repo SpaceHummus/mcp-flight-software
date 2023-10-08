@@ -9,9 +9,9 @@ file_path = Path(CURRENT_FOLDER + "/" + "led_mode.txt")
 
 
 # Returns current led mode (mode_name,r,g,b)
-def get_led_mode():
+def get_led_mode_from_file():
     
-     try:
+    try:
         # Reading from the file
         with open(file_path, 'r') as file:
             # Reading string
@@ -27,7 +27,7 @@ def get_led_mode():
             return ("Unknown",0,0,0)
     
 
-def set_led_mode(new_mode_name, r, g, b):
+def set_led_mode_to_file(new_mode_name, r, g, b):
     try:
         # Writing to the file with each number on a new line
         with open(file_path, 'w') as file:
