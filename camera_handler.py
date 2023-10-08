@@ -44,8 +44,6 @@ class CameraHandler:
         gp.setup(board3bcm(21), gp.OUT)
         gp.setup(board3bcm(22), gp.OUT)
 
-        gp.output(board3bcm(11), True)
-        gp.output(board3bcm(12), True)
         gp.output(board3bcm(15), True)
         gp.output(board3bcm(16), True)
         gp.output(board3bcm(21), True)
