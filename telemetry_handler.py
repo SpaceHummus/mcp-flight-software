@@ -222,14 +222,14 @@ class TelemetryHandler:
         
         # Self check which devices are connected 
         def is_address_active(address, device_name):
-            if addressin active_i2c_devices_str:
+            if address in active_i2c_devices_str:
                 logging.debug(f"{address} CONNECTED     ({device_name})")
             else:
                 logging.debug(f"{address} NOT CONNECTED ({device_name})")
+        is_address_active("0x40","MS8607 Temperture, and Humidity (2 addresses 0x40 and 0x76")
         is_address_active("0x58","SPG30 Gas Sensor")
-        
-        
-        
+        is_address_active("0x28","TSL2591 Ilumination")
+              
         return [active_i2c_devices_str]
             
     # Gather how long it took to gather all telemetry
