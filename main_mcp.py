@@ -40,7 +40,7 @@ if __name__ == "__main__":
     take_picture_with_led("WHITE_FAR",255,255,255,FAR_FOCUS)
     set_led_mode("OFF")
     
-    for in range(5): # Loop a few times
+    for i in range(5): # Loop a few times
         # Compute hash on a big file
         logging.info("Compute Hash on Big File...")
         h = bit_error_rate_handler.hash_large_file()
