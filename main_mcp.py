@@ -30,9 +30,13 @@ if __name__ == "__main__":
     logging.info("Gathering Telemetry...")
     tlm.gather_telemetry()
     
-    # Take color pictures
+    # Take pictures in different iluminations
     camera = CameraHandler()
-    set_led_mode("off")
+    def take_picture_with_led(mode_name,r,g,b,near_or_far):
+        set_led_mode(mode_name,r,g,b)
+        camera.take_pic(focus=near_or_far,is_use_full_resolution=IS_USE_FULL_RESOLUTION)
+    
+    take_picture_with_led("off",0,0,0,NEAR_FOCUS)
     time.sleep(1)
     set_led_mode("red",255,0,0)
     time.sleep(1)
