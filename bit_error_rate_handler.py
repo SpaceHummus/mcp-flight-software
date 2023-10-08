@@ -48,17 +48,17 @@ def hash_large_file():
 
 # Example usage
 if __name__ == "__main__":
-    print(hash_large_file())
-    return
-    
-    print("Creating the large file")
-    start_time = time.time()
-    _create_file()
-    elapsed_time = time.time() - start_time
-    print("Creating file took {elapsed_time}")
-    
-    print("Computing Hash on it")
-    start_time = time.time()
-    print(_compute_hash(big_file_path))
-    elapsed_time = time.time() - start_time
-    print("Hashing the file took {elapsed_time}")
+    if True:
+        print(hash_large_file())
+    else:
+        print("Creating the large file")
+        start_time = time.time()
+        _create_file()
+        elapsed_time = time.time() - start_time
+        print("Creating file took {elapsed_time}")
+        
+        print("Computing Hash on it")
+        start_time = time.time()
+        print(_compute_hash(big_file_path))
+        elapsed_time = time.time() - start_time
+        print("Hashing the file took {elapsed_time}")

@@ -10,7 +10,7 @@ import sys
 if __name__ == "__main__":
     # Print the options for this script
     print("Script Options:")
-    print("--fresh will check out a fresh copy of the code while deleting the old copy")
+    print("--fresh will check out a fresh copy of the code while deleting the old copy, it may work better with sudo:\nsudo python install_and_run_mcp.py --fresh")
     print("--loop will run main_mcp.py over and over again use ctrl+C to break"); 
 
     # Get the current directory of the Python script
