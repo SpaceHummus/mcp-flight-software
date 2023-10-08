@@ -36,15 +36,13 @@ if __name__ == "__main__":
         set_led_mode(mode_name,r,g,b)
         camera.take_pic(focus=near_or_far,is_use_full_resolution=IS_USE_FULL_RESOLUTION)
     
-    take_picture_with_led("off",0,0,0,NEAR_FOCUS)
-    time.sleep(1)
-    set_led_mode("red",255,0,0)
-    time.sleep(1)
-    set_led_mode("green",0,255,0)
-    time.sleep(1)
-    set_led_mode("blue",0,0,255)
-    time.sleep(1)
-    set_led_mode("off")
+    take_picture_with_led("OFF",0,0,0,NEAR_FOCUS)
+    take_picture_with_led("RED",255,0,0,NEAR_FOCUS)
+    take_picture_with_led("GREEN",255,0,0,NEAR_FOCUS)
+    take_picture_with_led("BLUE",255,0,0,NEAR_FOCUS)
+    take_picture_with_led("WHITE_NEAR",255,0,0,NEAR_FOCUS)
+    take_picture_with_led("WHITE_FAR",255,0,0,FAR_FOCUS)
+    take_picture_with_led("OFF",0,0,0,FAR_FOCUS)
     
     # Finally, update code for next run
     git.git_update_code()

@@ -33,7 +33,7 @@ def set_led_mode_to_file(new_mode_name, r, g, b):
         # Writing to the file with each number on a new line
         with open(file_path, 'w') as file:
             file.write(f"{new_mode_name}\n")
-            file.write(f"{r},{g}{b}\n")
+            file.write(f"{r}\n{g}\n{b}\n")
     except Exception as e:
         logging.warning(f"Can't save mode to file:\n{e}")
         
