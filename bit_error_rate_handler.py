@@ -16,13 +16,13 @@ def _generate_random_bytes(size):
 def _write_large_file(file_path, total_size, chunk_size):
     with open(file_path, 'wb') as file:
         for _ in range(total_size // chunk_size):
-            random_chunk = generate_random_bytes(chunk_size)
+            random_chunk = _generate_random_bytes(chunk_size)
             file.write(random_chunk)
             print('*')
 
         remaining_bytes = total_size % chunk_size
         if remaining_bytes > 0:
-            random_chunk = generate_random_bytes(remaining_bytes)
+            random_chunk = _generate_random_bytes(remaining_bytes)
             file.write(random_chunk)
 
 def _create_tmp_file(file_path):
@@ -30,7 +30,7 @@ def _create_tmp_file(file_path):
         total_size = 1024 * 1024 * 10 # 10 MByte
         chunk_size = 1024 * 1024  # 1MB
 
-        write_large_file(file_path, total_size, chunk_size)
+        _write_large_file(file_path, total_size, chunk_size)
 
 def _compute_hash(file_path, hash_algorithm='sha256'):
     hasher = hashlib.new(hash_algorithm)
