@@ -243,7 +243,7 @@ class TelemetryHandler:
     def _get_telemetry_gather_time(self, is_output_header):
         if is_output_header:
             # Just output the header, not the data
-            return ['BigFileHash','TelemetryCycleTime[sec]','TotalUptimeMin',]
+            return ['BigFileHash','TelemetryCycleTime[sec]','TotalUptime[min]',]
             
         execution_time = time.time() - self.collecting_telemetry_start_time
         total_uptime_min = uptime_handler.report_min_counter()
