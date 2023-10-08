@@ -27,7 +27,7 @@ def _write_large_file(file_path, total_size, chunk_size):
 
 def _create_tmp_file(file_path):
     if not os.path.exists(file_path):
-        total_size = 1024 * 1024 * 10 # 10 MByte
+        total_size = 1024 * 1024 * 100 # 10 MByte
         chunk_size = 1024 * 1024  # 1MB
 
         _write_large_file(file_path, total_size, chunk_size)
@@ -47,7 +47,7 @@ def update_hash():
         h = _compute_hash(big_file_path)
         
         with open(hash_file, 'w') as file:
-            f.write(h)
+            file.write(h)
     
     except Exception as e:
         print(e)
@@ -73,5 +73,6 @@ if __name__ == "__main__":
     start_time = time.time()
     update_hash()
     end_time = time.time()
-    print(f"My function took {elapsed_time} seconds to run.")
+    elapsed_time = start_time-end_time
+    print(f"update_hash took {elapsed_time} seconds to run.")
     print(read_hash())
