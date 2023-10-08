@@ -12,8 +12,8 @@ import time
 import bit_error_rate_handler
 
 # Camera parameters
-NEAR_FOCUS=100
-FAR_FOCUS=200
+NEAR_FOCUS=600
+FAR_FOCUS=1000
 IS_USE_FULL_RESOLUTION=False
 
 if __name__ == "__main__":
