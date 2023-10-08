@@ -57,10 +57,6 @@ class CameraHandler:
         gp.setwarnings(False)
         gp.setmode(gp.BCM)
 
-        #gp.setup(board3bcm(7), gp.OUT)
-        #gp.setup(board3bcm(11), gp.OUT)
-        #gp.setup(board3bcm(12), gp.OUT)
-
         gp.setup(board3bcm(15), gp.OUT)
         gp.setup(board3bcm(16), gp.OUT)
         gp.setup(board3bcm(21), gp.OUT)
@@ -140,9 +136,6 @@ class CameraHandler:
 
         # Return the original number (before incrementing)
         return n
-
-
-
 
 if __name__ == "__main__":
     camera = CameraHandler()
