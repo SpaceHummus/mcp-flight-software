@@ -61,10 +61,10 @@ def read_hash():
 if __name__ == "__main__":
     start_time = time.time()
     _create_file()
-    end_time = time.time()
+    elapsed_time = time.time() - start_time
     print("Creating file took {elapsed_time}")
     
     start_time = time.time()
     print(_compute_hash(big_file_path))
-    end_time = time.time()
+    elapsed_time = time.time() - start_time
     print("Hashing the file took {elapsed_time}")
