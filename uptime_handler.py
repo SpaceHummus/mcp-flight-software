@@ -2,8 +2,8 @@
 # Set up crontab like so.
 # In terminal 
 # crontab -e
-# * * * * * python3 home/pi/mcp/mcp-flight-software/uptime_handler.py
-# To save an exit: CTRL+X and "Y"
+# * * * * * python3 /home/pi/mcp/mcp-flight-software/uptime_handler.py
+# To save an exit: type ":wq!"
 
 import os
 from pathlib import Path
