@@ -160,7 +160,7 @@ class TelemetryHandler:
             return [''] # Return empty csv
     
     # Gather current and power consumption.
-    # I2C Address 0x40
+    # I2C Address 0x41
     def _probe_ina3221_telemetry(self, is_output_header):
         if is_output_header:
             # Just output the header, not the data
@@ -171,7 +171,7 @@ class TelemetryHandler:
         # Get the actual data
         try:
             # Init device
-            ina3221 = INA3221(self.i2c, shunt_resistor=(0.05,0.05,0.05))
+            ina3221 = INA3221(self.i2c, shunt_resistor=(0.05,0.05,0.05), i2c_addr=0x41)
             
             # Enable all 3 channels.
             ina3221.enable_channel(1)
@@ -226,9 +226,11 @@ class TelemetryHandler:
                 logging.debug(f"{address} CONNECTED     ({device_name})")
             else:
                 logging.debug(f"{address} NOT CONNECTED ({device_name})")
+        is_address_active("0x29","TSL2591 Ilumination")
         is_address_active("0x40","MS8607 Temperture, and Humidity (2 addresses 0x40 and 0x76")
+        ia_address_active("0x41","INA3221 Current sensor")
         is_address_active("0x58","SPG30 Gas Sensor")
-        is_address_active("0x28","TSL2591 Ilumination")
+        
               
         return [active_i2c_devices_str]
             
