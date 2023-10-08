@@ -10,12 +10,27 @@ CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
 big_file_path  = Path(CURRENT_FOLDER + "/" + "bit_error_rate_random.bin")
 hash_file      = Path(CURRENT_FOLDER + "/" + "hash.txt")
 
-def _create_tmp_file(file_path, size_gb=1):
+def _generate_random_bytes(size):
+    return bytes([random.randint(0, 255) for _ in range(size)])
+
+def _write_large_file(file_path, total_size, chunk_size):
+    with open(file_path, 'wb') as file:
+        for _ in range(total_size // chunk_size):
+            random_chunk = generate_random_bytes(chunk_size)
+            file.write(random_chunk)
+            print('*')
+
+        remaining_bytes = total_size % chunk_size
+        if remaining_bytes > 0:
+            random_chunk = generate_random_bytes(remaining_bytes)
+            file.write(random_chunk)
+
+def _create_tmp_file(file_path):
     if not os.path.exists(file_path):
-        with open(file_path, 'wb') as f:
-            # Generate random data
-            random_data = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size_gb * 1024 * 1024 * 1024))
-            f.write(random_data.encode())
+        total_size = 1024 * 1024 * 10 # 10 MByte
+        chunk_size = 1024 * 1024  # 1MB
+
+        write_large_file(file_path, total_size, chunk_size)
 
 def _compute_hash(file_path, hash_algorithm='sha256'):
     hasher = hashlib.new(hash_algorithm)
