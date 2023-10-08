@@ -84,9 +84,9 @@ class CameraHandler:
         # Generate command string according to is_use_full_resolution
         # Use -vf -hf flags to flip the image vertically or horizontically if needed
         if is_use_full_resolution:
-            cmd = "raspistill -o %s" %new_file_name
+            cmd = "raspistill -o '%s'" %new_file_name
         else:
-            cmd = "raspistill -w 640 -h 480 -n -t 100 -q 20 -e jpg -th none -o %s" %new_file_name
+            cmd = "raspistill -w 640 -h 480 -n -t 100 -q 20 -e jpg -th none -o '%s'" %new_file_name
         
         # Take the picture
         logging.info("taking picture, file path: %s",new_file_name)
