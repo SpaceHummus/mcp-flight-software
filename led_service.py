@@ -29,7 +29,7 @@ def set_led_mode(new_mode_name, new_r=-1, new_g=-1, new_b=-1):
     if new_r == current_r and new_g == current_g and new_b == current_b and new_mode_name == current_mode_name:
         
         # If new mode is off, turn off LED power by switching off the GPIO
-        if new_mode_name == "off":
+        if new_mode_name.lower() == "off":
             GPIO.output(LED_ENABLE_PIN, False)# Turn Neo pixel enable line
         
         # Nothing more to do, return
@@ -39,7 +39,7 @@ def set_led_mode(new_mode_name, new_r=-1, new_g=-1, new_b=-1):
     tlm.gather_telemetry()
     
     # Set GPIO switch according to mode
-    if new_mode_name == "off":
+    if new_mode_name.lower() == "off":
         GPIO.output(LED_ENABLE_PIN, False)# Turn Neo pixel enable line
     else:
         # Turn on GPIO
