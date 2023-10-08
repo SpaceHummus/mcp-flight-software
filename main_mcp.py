@@ -7,7 +7,13 @@ import logging
 from telemetry_handler import TelemetryHandler
 from setup_logging import setup_logging
 from led_service import set_led_mode
+from camera_handler import CameraHandler
 import time
+
+# Camera parameters
+NEAR_FOCUS=100
+FAR_FOCUS=200
+IS_USE_FULL_RESOLUTION=False
 
 if __name__ == "__main__":
     setup_logging()
@@ -25,6 +31,7 @@ if __name__ == "__main__":
     tlm.gather_telemetry()
     
     # Take color pictures
+    camera = CameraHandler()
     set_led_mode("off")
     time.sleep(1)
     set_led_mode("red",255,0,0)

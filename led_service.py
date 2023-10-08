@@ -10,7 +10,7 @@ import RPi.GPIO as GPIO
 import time
 
 pixels = neopixel.NeoPixel(board.D21, 10,brightness =1)
-tel = TelemetryHandler
+tlm = TelemetryHandler
 
 GPIO.setmode(GPIO.BCM)
 LED_ENABLE_PIN = 23
@@ -21,6 +21,7 @@ def get_led_mode():
     return led_mode_report.get_led_mode_from_file()
 
 def set_led_mode(new_mode_name, new_r=-1, new_g=-1, new_b=-1):
+    global tlm
     
     # Read what is the current mode
     current_mode_name, current_r, current_g, current_b = get_led_mode()
@@ -36,7 +37,7 @@ def set_led_mode(new_mode_name, new_r=-1, new_g=-1, new_b=-1):
         return
         
     # Capture telemtry before making the change so we have reference to compare to
-    tel.gather_telemetry()
+    tlm.gather_telemetry()
     
     # Set GPIO switch according to mode
     if new_mode_name == "off":
@@ -55,7 +56,7 @@ def set_led_mode(new_mode_name, new_r=-1, new_g=-1, new_b=-1):
     led_mode_report.set_led_mode_to_file(new_mode_name, new_r, new_g, new_b)
 
     # Capture telemtry right after making the change so we have reference to compare to
-    tel.gather_telemetry()
+    tlm.gather_telemetry()
         
     
 
