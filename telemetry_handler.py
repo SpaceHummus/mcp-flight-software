@@ -95,7 +95,7 @@ class TelemetryHandler:
             # Calibration is better when temperature and relative humidity is given
             if (isinstance(temperature_celsius, (int, float)) and 
                 relative_humidity>0): # If no telemetry was provided, relative_humidity will be -1. This clause prevents us from initializing using bad data
-                logging.debug("Initializing SGP30 with temperature and relative humidity.\nTemperature: %3.1f[C], Relative Humidity: %3.0f%%", 
+                logging.debug("Init SGP30 with temp & humidity.\nTemperature: %3.1f[C], Relative Humidity: %3.0f%%", 
                     temperature_celsius, relative_humidity)
                 self.sgp30.set_iaq_relative_humidity(
                     celsius=temperature_celsius, 
@@ -230,7 +230,7 @@ class TelemetryHandler:
         is_address_active("0x29","TSL2591 Ilumination (2nd address)")
         is_address_active("0x40","MS8607 Temperture & Humidity (1st address)")
         is_address_active("0x76","MS8607 Temperture & Humidity (2nd address)")
-        ia_address_active("0x41","INA3221 Current sensor")
+        is_address_active("0x41","INA3221 Current sensor")
         is_address_active("0x58","SPG30 Gas Sensor")
         is_address_active("0x68","RTC")
         
