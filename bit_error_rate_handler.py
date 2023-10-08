@@ -31,39 +31,30 @@ def _compute_hash(file_path, hash_algorithm='sha256'):
             hasher.update(chunk)
     return hasher.hexdigest()
 
-def update_hash():
+def hash_large_file():
     try:
-        h = _compute_hash(big_file_path)
         
-        with open(hash_file, 'w') as file:
-            file.write(h)
+        # If file doesn't exist, already - create it
+        if not os.path.exists(big_file_path):
+            _create_file()
+            
+        # If it does, hash it
+        h = _compute_hash(big_file_path)
+        return h
     
     except Exception as e:
         print(e)
-        return 0
-  
-def read_hash():
-    try:
-        # Reading from the file
-        with open(hash_file, 'r') as file:
-            h = f.read()
-            
-        # Remove the file, so that it will be re-computed
-        os.remove(hash_file)
-        
-        return h
-            
-    except Exception as e:
-        # No file, or file has an issue start from 0
-        return "Error"
+        return "-"
 
 # Example usage
 if __name__ == "__main__":
+    print("Creating the large file")
     start_time = time.time()
     _create_file()
     elapsed_time = time.time() - start_time
     print("Creating file took {elapsed_time}")
     
+    print("Computing Hash on it")
     start_time = time.time()
     print(_compute_hash(big_file_path))
     elapsed_time = time.time() - start_time

@@ -33,7 +33,8 @@ if __name__ == "__main__":
     
     # Compute hash on a big file
     logging.info("Compute Hash on Big File...")
-    bit_error_rate_handler.update_hash()
+    logging.info(bit_error_rate_handler.hash_large_file())
+    logging.info("Done Hashing")
     
     # Take pictures in different iluminations
     camera = CameraHandler()
