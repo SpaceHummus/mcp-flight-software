@@ -115,7 +115,7 @@ class CameraHandler:
                 n = int(file.read().strip())
                 
         except Exception as e:
-            logging.warning(f"Can't determine n: {e}")
+            logging.warning(f"Can't determine n:\n{e}")
             # Handle file not found or corrupted (invalid content)
             n = 0
         
@@ -124,7 +124,7 @@ class CameraHandler:
             with open(file_path, 'w') as file:
                 file.write(str(n + 1))
         except Exception as e:
-            logging.warning(f"Error writing to file: {e}")
+            logging.warning(f"Error writing to file:\n{e}")
 
         # Return the original number (before incrementing)
         return n

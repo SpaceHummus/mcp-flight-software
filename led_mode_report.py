@@ -24,7 +24,7 @@ def get_led_mode_from_file():
         return (mode,rgb[0],rgb[1],rgb[2])
 
     except Exception as e:
-        logging.warning(f"Can't determine mode: {e}")
+        logging.warning(f"Can't determine mode:\n{e}")
         return ("Unknown",0,0,0)
     
 
@@ -35,7 +35,7 @@ def set_led_mode_to_file(new_mode_name, r, g, b):
             file.write(f"{new_mode_name}\n")
             file.write(f"{r},{g}{b}\n")
     except Exception as e:
-        logging.warning(f"Can't save mode to file: {e}")
+        logging.warning(f"Can't save mode to file:\n{e}")
         
     
 
