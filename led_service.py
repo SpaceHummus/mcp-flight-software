@@ -3,6 +3,7 @@ import board
 from datetime import datetime
 import neopixel
 import logging
+import led_mode_report
 from setup_logging import setup_logging
 from telemetry_handler import TelemetryHandler
 import time
@@ -14,7 +15,7 @@ tel = TelemetryHandler
 def get_led_mode():
     # Todo, read from file
 
-    return ("off",0,0,0)
+    return led_mode_report.get_led_mode_from_file()
 
 def set_led_mode(new_r, new_g, new_b, new_mode_name):
     
@@ -47,6 +48,8 @@ def set_led_mode(new_r, new_g, new_b, new_mode_name):
         # Set Neopixel values
         pixels.fill((new_r, new_g, new_b))
         pixels.show()
+        
+    led_mode_report.set_led_mode_to_file(new_mode_name, new_r, new_g, new_b)
 
     # Capture telemtry right after making the change so we have reference to compare to
     tel.gather_telemetry()

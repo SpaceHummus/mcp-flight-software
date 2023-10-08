@@ -6,7 +6,7 @@ import board
 import csv
 from datetime import datetime
 import itertools
-import led_service import get_led_mode
+import led_mode_report
 import logging
 import time
 from setup_logging import setup_logging
@@ -43,7 +43,7 @@ class TelemetryHandler:
         
         now = datetime.now()  # current date and time
         date_time = now.strftime("%Y-%m-%d %H:%M:%S")
-        mode, *_  = led_service.get_led_mode()
+        mode, *_  = led_mode_report.get_led_mode_from_file()
         return [date_time, mode]
     
     # Gather air pressure, temperature and humidity telemetry
