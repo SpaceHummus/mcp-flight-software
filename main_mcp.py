@@ -9,6 +9,7 @@ from setup_logging import setup_logging
 from led_service import set_led_mode
 from camera_handler import CameraHandler
 import time
+import bit_error_rate_handler
 
 # Camera parameters
 NEAR_FOCUS=100
@@ -29,6 +30,9 @@ if __name__ == "__main__":
     # Gather telemetry
     logging.info("Gathering Telemetry...")
     tlm.gather_telemetry()
+    
+    # Compute hash on a big file
+    bit_error_rate_handler.update_hash()
     
     # Take pictures in different iluminations
     camera = CameraHandler()

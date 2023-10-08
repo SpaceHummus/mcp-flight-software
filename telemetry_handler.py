@@ -12,6 +12,7 @@ import time
 from setup_logging import setup_logging
 import uptime_handler
 import os
+import bit_error_rate_handler
 
 ###################### Import drivers specific for each sensor ######################
 # Pressure and humidity sensor library.
@@ -242,11 +243,13 @@ class TelemetryHandler:
     def _get_telemetry_gather_time(self, is_output_header):
         if is_output_header:
             # Just output the header, not the data
-            return ['TelemetryCycleTime[sec]','TotalUptimeMin',]
+            return ['BigFileHash','TelemetryCycleTime[sec]','TotalUptimeMin',]
             
+        h = bit_error_rate_handler.read_hash()
         execution_time = time.time() - self.collecting_telemetry_start_time
         total_uptime_min = uptime_handler.report_min_counter()
         return [
+            h,
             "{:.1f}".format(execution_time),
             "{:.0f}".format(total_uptime_min)]    
 
