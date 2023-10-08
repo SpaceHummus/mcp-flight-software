@@ -54,7 +54,7 @@ class CameraHandler:
         arducam_vcm.vcm_init()
 
     # Change camera focus - due to a bug in the HW, we need to open a thread that starts raspstill in the backbround inparallel, why??? who knows...
-    def change_focus(self,focus):
+    def change_focus(self, focus):
         self.focus = focus
         logging.info("changing focus to:%d",focus)
         x = threading.Thread(target=run_camera, args=(1,))
@@ -74,7 +74,7 @@ class CameraHandler:
         # Generate filepath
         new_file_name="{0}{0:04d}_F{1:04d}_{2}.jpg".format(
             folder_path,
-            self._take_pic_increment_index_by_one()
+            self._take_pic_increment_index_by_one(),
             self.focus,
             "_" + file_suffix if file_suffix else ""
             )
