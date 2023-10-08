@@ -10,6 +10,9 @@ import threading
 from pathlib import Path
 from setup_logging import setup_logging
 
+# Determine folder in which this file is present
+CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
+
 def run_camera(name):
     os.system("raspistill -t 2000")
 
@@ -64,13 +67,13 @@ class CameraHandler:
     # Take a picture, at current focus. Return file path to the picture.
     # File format is <Picture #>_<Focus>_<file_suffix>.jpg
     def take_pic (self, 
-        folder_path = "./", 
+        folder_path = CURRENT_FOLDER, 
         file_suffix = "", # Use file suffix to specify illumination 
         is_use_full_resolution = True, # Set to True for full resolution or False for reduced resolution, but easier to send data
         ):
         
         # Generate filepath
-        new_file_name="{0}{1:04d}_F{2:04d}_{3}.jpg".format(
+        new_file_name="{0}/{1:04d}_F{2:04d}_{3}.jpg".format(
             folder_path,
             self._take_pic_increment_index_by_one(),
             self.focus,
@@ -96,12 +99,7 @@ class CameraHandler:
         
     # This is an auxilary function to get next image index from file, and increase that number by 1
     def _take_pic_increment_index_by_one(self):
-        # Get the absolute path of the current Python file
-        current_file_path = os.path.abspath(__file__)
-
-        # Get the directory (folder) of the current Python file
-        current_folder = os.path.dirname(current_file_path)
-        file_path = Path(current_folder + "/" + "pic_number.txt")
+        file_path = Path(CURRENT_FOLDER + "/" + "pic_number.txt")
         
         # Get next number from file
         try:
