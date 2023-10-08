@@ -64,7 +64,7 @@ class GitHandler:
         commit_time_result = subprocess.check_output(['git', 'log', '-1','--format=%cd'], stderr=subprocess.STDOUT)
         self._change_folder_back()
         
-        version = "Version Commit Time:" + commit_time_result.decode().strip() + " Hash: " + rev_parse_result.decode().strip()        
+        version = "Version Commit Time:" + commit_time_result.decode().strip() + "\nHash: " + rev_parse_result.decode().strip()        
         logging.info(version)
         return version
 
