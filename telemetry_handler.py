@@ -10,6 +10,7 @@ import led_mode_report
 import logging
 import time
 from setup_logging import setup_logging
+import uptime_handler
 import os
 
 ###################### Import drivers specific for each sensor ######################
@@ -241,10 +242,13 @@ class TelemetryHandler:
     def _get_telemetry_gather_time(self, is_output_header):
         if is_output_header:
             # Just output the header, not the data
-            return ['TelemetryCycleTime[sec]']
+            return ['TelemetryCycleTime[sec]','TotalUptimeMin',]
             
         execution_time = time.time() - self.collecting_telemetry_start_time
-        return ["{:.1f}".format(execution_time)]    
+        total_uptime_min = uptime_handler.report_min_counter()
+        return [
+            "{:.1f}".format(execution_time)
+            "{:.0f}".format(total_uptime_min)]    
 
 ###################### End of Private Functions to Collect Telemetry ######################
 
