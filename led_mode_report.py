@@ -24,7 +24,7 @@ def get_led_mode_from_file():
 
     except Exception as e:
         logging.warning(f"Can't determine mode: {e}")
-            return ("Unknown",0,0,0)
+        return ("Unknown",0,0,0)
     
 
 def set_led_mode_to_file(new_mode_name, r, g, b):
