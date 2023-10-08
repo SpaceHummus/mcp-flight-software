@@ -48,6 +48,9 @@ def hash_large_file():
 
 # Example usage
 if __name__ == "__main__":
+    print(hash_large_file())
+    return
+    
     print("Creating the large file")
     start_time = time.time()
     _create_file()
