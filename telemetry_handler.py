@@ -226,10 +226,13 @@ class TelemetryHandler:
                 logging.debug(f"{address} CONNECTED     ({device_name})")
             else:
                 logging.debug(f"{address} NOT CONNECTED ({device_name})")
-        is_address_active("0x29","TSL2591 Ilumination")
-        is_address_active("0x40","MS8607 Temperture, and Humidity (2 addresses 0x40 and 0x76")
+        is_address_active("0x28","TSL2591 Ilumination (1st address)")
+        is_address_active("0x29","TSL2591 Ilumination (2nd address)")
+        is_address_active("0x40","MS8607 Temperture & Humidity (1st address)")
+        is_address_active("0x76","MS8607 Temperture & Humidity (2nd address)")
         ia_address_active("0x41","INA3221 Current sensor")
         is_address_active("0x58","SPG30 Gas Sensor")
+        is_address_active("0x68","RTC")
         
               
         return [active_i2c_devices_str]
