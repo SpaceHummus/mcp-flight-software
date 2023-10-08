@@ -40,16 +40,17 @@ if __name__ == "__main__":
     take_picture_with_led("WHITE_FAR",255,255,255,FAR_FOCUS)
     set_led_mode("OFF")
     
-    # Compute hash on a big file
-    logging.info("Compute Hash on Big File...")
-    h = bit_error_rate_handler.hash_large_file()
-    logging.info(h)
-    tlm.big_file_hash = h
-    logging.info("Done Hashing")
-    
-    # Gather telemetry
-    logging.info("Gathering Telemetry...")
-    tlm.gather_telemetry()
+    for in range(5): # Loop a few times
+        # Compute hash on a big file
+        logging.info("Compute Hash on Big File...")
+        h = bit_error_rate_handler.hash_large_file()
+        logging.info(h)
+        tlm.big_file_hash = h
+        logging.info("Done Hashing")
+        
+        # Gather telemetry
+        logging.info("Gathering Telemetry...")
+        tlm.gather_telemetry()
     
     # Finally, update code for next run
     git.git_update_code()
