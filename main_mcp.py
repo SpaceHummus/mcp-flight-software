@@ -26,15 +26,6 @@ if __name__ == "__main__":
     
     # Present to user what version are we on
     git.git_get_version()
-
-    # Gather telemetry
-    logging.info("Gathering Telemetry...")
-    tlm.gather_telemetry()
-    
-    # Compute hash on a big file
-    logging.info("Compute Hash on Big File...")
-    logging.info(bit_error_rate_handler.hash_large_file())
-    logging.info("Done Hashing")
     
     # Take pictures in different iluminations
     camera = CameraHandler()
@@ -47,7 +38,18 @@ if __name__ == "__main__":
     take_picture_with_led("BLUE",0,0,255,NEAR_FOCUS)
     take_picture_with_led("WHITE_NEAR",255,255,255,NEAR_FOCUS)
     take_picture_with_led("WHITE_FAR",255,255,255,FAR_FOCUS)
-    take_picture_with_led("OFF",0,0,0,FAR_FOCUS)
+    set_led_mode("OFF")
+    
+    # Compute hash on a big file
+    logging.info("Compute Hash on Big File...")
+    h = bit_error_rate_handler.hash_large_file()
+    logging.info(h)
+    tlm.big_file_hash = h
+    logging.info("Done Hashing")
+    
+    # Gather telemetry
+    logging.info("Gathering Telemetry...")
+    tlm.gather_telemetry()
     
     # Finally, update code for next run
     git.git_update_code()

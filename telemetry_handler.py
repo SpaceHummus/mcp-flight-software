@@ -12,7 +12,6 @@ import time
 from setup_logging import setup_logging
 import uptime_handler
 import os
-import bit_error_rate_handler
 
 ###################### Import drivers specific for each sensor ######################
 # Pressure and humidity sensor library.
@@ -30,6 +29,7 @@ TELEMETRY_FILE = 'telemetry.csv'
 class TelemetryHandler:
     i2c = None
     collecting_telemetry_start_time = None
+    big_file_hash = "" # When computing hash on the big file, set this parameter to be included in csv
 
     def __init__(self):
         self.i2c = board.I2C()
@@ -245,11 +245,10 @@ class TelemetryHandler:
             # Just output the header, not the data
             return ['BigFileHash','TelemetryCycleTime[sec]','TotalUptimeMin',]
             
-        h = bit_error_rate_handler.read_hash()
         execution_time = time.time() - self.collecting_telemetry_start_time
         total_uptime_min = uptime_handler.report_min_counter()
         return [
-            h,
+            self.big_file_hash,
             "{:.1f}".format(execution_time),
             "{:.0f}".format(total_uptime_min)]    
 
