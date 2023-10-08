@@ -231,7 +231,7 @@ class TelemetryHandler:
         is_address_active("0x40","MS8607 Temp & Humidity (1)")
         is_address_active("0x76","MS8607 Temp & Humidity (2)")
         is_address_active("0x41","INA3221 Current sensor")
-        is_address_active("0x58","SPG30 Gas Sensor")
+        is_address_active("0x58","SGP30 Gas Sensor")
         is_address_active("0x68","RTC")
         
               
