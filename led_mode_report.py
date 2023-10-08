@@ -2,6 +2,7 @@
 import logging
 from setup_logging import setup_logging
 import os
+from pathlib import Path
 
 # Determine folder in which this file is present
 CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
