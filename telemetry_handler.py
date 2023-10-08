@@ -6,7 +6,7 @@ import board
 import csv
 from datetime import datetime
 import itertools
-import led_service
+import led_service import get_led_mode
 import logging
 import time
 from setup_logging import setup_logging
