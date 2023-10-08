@@ -16,7 +16,7 @@ def report_min_counter():
     try:
         # Reading from the file
         with open(file_path, 'r') as file:
-            time = int(f.read())
+            time = int(file.read())
             
         return time
             
@@ -29,8 +29,9 @@ def increase_min_counter():
     time += 1    
     
     with open(file_path, 'w') as file:
-        f.write(str(time))
+        file.write(str(time))
     
 # Progress
 if __name__ == "__main__":
     increase_min_counter()
+    print(report_min_counter())
