@@ -6,6 +6,7 @@ import logging
 import led_mode_report
 from setup_logging import setup_logging
 from telemetry_handler import TelemetryHandler
+import RPi.GPIO as GPIO
 import time
 
 pixels = neopixel.NeoPixel(board.D21, 10,brightness =1)
