@@ -10,6 +10,8 @@ from led_service import set_led_mode
 from camera_handler import CameraHandler
 import time
 import bit_error_rate_handler
+import zipfile
+import os
 
 # Camera parameters
 NEAR_FOCUS=600
@@ -29,15 +31,17 @@ if __name__ == "__main__":
     
     # Take pictures in different iluminations
     camera = CameraHandler()
+    artifacts_files_paths = ['telemetry.csv']
     def take_picture_with_led(mode_name,r,g,b,near_or_far):
         set_led_mode(mode_name,r,g,b)
-        camera.take_pic(focus=near_or_far,is_use_full_resolution=IS_USE_FULL_RESOLUTION)
-    take_picture_with_led("OFF",0,0,0,NEAR_FOCUS)
-    take_picture_with_led("RED",255,0,0,NEAR_FOCUS)
-    take_picture_with_led("GREEN",0,255,0,NEAR_FOCUS)
-    take_picture_with_led("BLUE",0,0,255,NEAR_FOCUS)
-    take_picture_with_led("WHITE_NEAR",255,255,255,NEAR_FOCUS)
-    take_picture_with_led("WHITE_FAR",255,255,255,FAR_FOCUS)
+        path = camera.take_pic(focus=near_or_far,is_use_full_resolution=IS_USE_FULL_RESOLUTION)
+        return path
+    artifacts_files_paths.append(take_picture_with_led("OFF",0,0,0,NEAR_FOCUS))
+    artifacts_files_paths.append(take_picture_with_led("RED",255,0,0,NEAR_FOCUS))
+    artifacts_files_paths.append(take_picture_with_led("GREEN",0,255,0,NEAR_FOCUS))
+    artifacts_files_paths.append(take_picture_with_led("BLUE",0,0,255,NEAR_FOCUS))
+    artifacts_files_paths.append(take_picture_with_led("WHITE_NEAR",255,255,255,NEAR_FOCUS))
+    artifacts_files_paths.append(take_picture_with_led("WHITE_FAR",255,255,255,FAR_FOCUS))
     set_led_mode("OFF")
     
     for i in range(5): # Loop a few times
@@ -51,6 +55,11 @@ if __name__ == "__main__":
         # Gather telemetry
         logging.info("Gathering Telemetry...")
         tlm.gather_telemetry()
+        
+    # Collect artifacts and zip them
+    with zipfile.ZipFile("artifacts", 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for file in artifacts_files_paths:
+            zipf.write(file, os.path.basename(file))
     
     # Finally, update code for next run
     git.git_update_code()
