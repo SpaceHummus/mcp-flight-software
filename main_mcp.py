@@ -6,6 +6,8 @@ from git_handler import GitHandler
 import logging
 from telemetry_handler import TelemetryHandler
 from setup_logging import setup_logging
+from led_service import set_led_mode
+import time
 
 if __name__ == "__main__":
     setup_logging()
@@ -21,6 +23,17 @@ if __name__ == "__main__":
     # Gather telemetry
     logging.info("Gathering Telemetry...")
     tlm.gather_telemetry()
+    
+    # Take color pictures
+    set_led_mode("off")
+    time.sleep(1)
+    set_led_mode("red",255,0,0)
+    time.sleep(1)
+    set_led_mode("green",0,255,0)
+    time.sleep(1)
+    set_led_mode("blue",0,0,255)
+    time.sleep(1)
+    set_led_mode("off")
     
     # Finally, update code for next run
     git.git_update_code()

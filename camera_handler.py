@@ -9,6 +9,7 @@ from datetime import datetime
 import threading
 from pathlib import Path
 from setup_logging import setup_logging
+import led_mode_report
 
 # Determine folder in which this file is present
 CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -71,19 +72,19 @@ class CameraHandler:
         time.sleep(3)
         
     # Take a picture, at current focus. Return file path to the picture.
-    # File format is <Picture #>_<Focus>_<file_suffix>.jpg
+    # File format is <Picture #>_<Focus>_<Mode>.jpg
     def take_pic (self, 
         folder_path = CURRENT_FOLDER, 
-        file_suffix = "", # Use file suffix to specify illumination 
         is_use_full_resolution = True, # Set to True for full resolution or False for reduced resolution, but easier to send data
         ):
         
         # Generate filepath
+        mode, *_  = led_mode_report.get_led_mode_from_file()
         new_file_name="{0}/{1:04d}_F{2:04d}_{3}.jpg".format(
             folder_path,
             self._take_pic_increment_index_by_one(),
             self.focus,
-            "_" + file_suffix if file_suffix!="" else ""
+            mode
             )
         new_file_name = Path(new_file_name)
         
