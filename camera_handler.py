@@ -74,7 +74,7 @@ class CameraHandler:
             folder_path,
             self._take_pic_increment_index_by_one(),
             self.focus,
-            "_" + file_suffix if file_suffix else ""
+            "_" + file_suffix if file_suffix!="" else ""
             )
         new_file_name = Path(new_file_name)
         
