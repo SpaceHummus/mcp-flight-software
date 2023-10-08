@@ -4,33 +4,23 @@ import random
 import string
 import time
 from pathlib import Path
+import array
+
 
 # Determine folder in which this file is present
 CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
 big_file_path  = Path(CURRENT_FOLDER + "/" + "bit_error_rate_random.bin")
 hash_file      = Path(CURRENT_FOLDER + "/" + "hash.txt")
 
-def _generate_random_bytes(size):
-    return bytes([random.randint(0, 255) for _ in range(size)])
 
-def _write_large_file(file_path, total_size, chunk_size):
-    with open(file_path, 'wb') as file:
-        for _ in range(total_size // chunk_size):
-            random_chunk = _generate_random_bytes(chunk_size)
-            file.write(random_chunk)
-            print('*')
+def _create_file():
+    # Create an array of unsigned bytes
+    data = array.array('B', range(256))
 
-        remaining_bytes = total_size % chunk_size
-        if remaining_bytes > 0:
-            random_chunk = _generate_random_bytes(remaining_bytes)
-            file.write(random_chunk)
-
-def _create_tmp_file(file_path):
-    if not os.path.exists(file_path):
-        total_size = 1024 * 1024 * 100 # 10 MByte
-        chunk_size = 1024 * 1024  # 1MB
-
-        _write_large_file(file_path, total_size, chunk_size)
+    with open(big_file_path, 'wb') as file:
+        # Write 1 GB of data
+        for _ in range(1024 * 1024 * 1024 // len(data)):
+            file.write(data)
 
 def _compute_hash(file_path, hash_algorithm='sha256'):
     hasher = hashlib.new(hash_algorithm)
@@ -43,7 +33,6 @@ def _compute_hash(file_path, hash_algorithm='sha256'):
 
 def update_hash():
     try:
-        _create_tmp_file(big_file_path)
         h = _compute_hash(big_file_path)
         
         with open(hash_file, 'w') as file:
@@ -71,8 +60,11 @@ def read_hash():
 # Example usage
 if __name__ == "__main__":
     start_time = time.time()
-    update_hash()
+    _create_file()
     end_time = time.time()
-    elapsed_time = start_time-end_time
-    print(f"update_hash took {elapsed_time} seconds to run.")
-    print(read_hash())
+    print("Creating file took {elapsed_time}")
+    
+    start_time = time.time()
+    print(_compute_hash(big_file_path))
+    end_time = time.time()
+    print("Hashing the file took {elapsed_time}")
