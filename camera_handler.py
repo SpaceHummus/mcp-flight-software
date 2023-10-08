@@ -41,11 +41,17 @@ class CameraHandler:
     def __init__(self,width=4056,height=3040):
         gp.setwarnings(False)
         gp.setmode(gp.BCM)
+        
+        gp.setup(board3bcm(11), gp.OUT)
+        gp.setup(board3bcm(12), gp.OUT)
 
         gp.setup(board3bcm(15), gp.OUT)
         gp.setup(board3bcm(16), gp.OUT)
         gp.setup(board3bcm(21), gp.OUT)
         gp.setup(board3bcm(22), gp.OUT)
+        
+        gp.output(board3bcm(11), True)
+        gp.output(board3bcm(12), True)
 
         gp.output(board3bcm(15), True)
         gp.output(board3bcm(16), True)
