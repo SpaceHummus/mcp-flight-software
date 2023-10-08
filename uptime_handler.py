@@ -3,7 +3,7 @@
 # In terminal 
 # crontab -e
 # * * * * * python3 /home/pi/mcp/mcp-flight-software/uptime_handler.py
-# To save an exit: type ":wq!"
+# To save an exit: CTRL+O then hit enter twice, then CTRL+X to exit
 
 import os
 from pathlib import Path
