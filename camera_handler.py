@@ -8,7 +8,7 @@ import time
 from datetime import datetime
 import threading
 from pathlib import Path
-
+from setup_logging import setup_logging
 
 def run_camera(name):
     os.system("raspistill -t 2000")
@@ -127,6 +127,7 @@ class CameraHandler:
 
 
 if __name__ == "__main__":
+    setup_logging()
     camera = CameraHandler()
     camera.change_focus(100)
     camera.take_pic(is_use_full_resolution=True)
