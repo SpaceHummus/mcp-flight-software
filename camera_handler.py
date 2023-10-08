@@ -62,7 +62,7 @@ class CameraHandler:
         arducam_vcm.vcm_init()
 
     # Change camera focus - due to a bug in the HW, we need to open a thread that starts raspstill in the backbround inparallel, why??? who knows...
-    def change_focus(self, focus):
+    def _change_focus(self, focus):
         self.focus = focus
         logging.info("changing focus to:%d",focus)
         x = threading.Thread(target=run_camera, args=(1,))
@@ -74,9 +74,13 @@ class CameraHandler:
     # Take a picture, at current focus. Return file path to the picture.
     # File format is <Picture #>_<Focus>_<Mode>.jpg
     def take_pic (self, 
+        focus = 512,
         folder_path = CURRENT_FOLDER, 
         is_use_full_resolution = True, # Set to True for full resolution or False for reduced resolution, but easier to send data
         ):
+        
+        # Change focus
+        self._change_focus(focus)
         
         # Generate filepath
         mode, *_  = led_mode_report.get_led_mode_from_file()
@@ -134,12 +138,9 @@ class CameraHandler:
 if __name__ == "__main__":
     setup_logging()
     camera = CameraHandler()
-    camera.change_focus(100)
-    camera.take_pic(is_use_full_resolution=True)
-    camera.change_focus(900)
-    camera.take_pic(is_use_full_resolution=False)
+    camera.take_pic(focus=100,is_use_full_resolution=True)
+    camera.take_pic(focus=900, is_use_full_resolution=False)
     
     # Run calibration by trying different values
-    for i in range(0, 1101, 100):
-        camera.change_focus(i)
-        camera.take_pic(is_use_full_resolution=False)
+    for f in range(0, 1101, 100):
+        camera.take_pic(focus=f,is_use_full_resolution=False)
