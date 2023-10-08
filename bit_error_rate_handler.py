@@ -2,12 +2,13 @@ import os
 import hashlib
 import random
 import string
+import time
 from pathlib import Path
 
 # Determine folder in which this file is present
 CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
-big_file_path = Path(CURRENT_FOLDER + "/" + "bit_error_rate_random.bin")
-hash_file =  = Path(CURRENT_FOLDER + "/" + "hash.txt")
+big_file_path  = Path(CURRENT_FOLDER + "/" + "bit_error_rate_random.bin")
+hash_file      = Path(CURRENT_FOLDER + "/" + "hash.txt")
 
 def _create_tmp_file(file_path, size_gb=1):
     if not os.path.exists(file_path):
@@ -54,5 +55,8 @@ def read_hash():
 
 # Example usage
 if __name__ == "__main__":
+    start_time = time.time()
     update_hash()
+    end_time = time.time()
+    print(f"My function took {elapsed_time} seconds to run.")
     print(read_hash())
