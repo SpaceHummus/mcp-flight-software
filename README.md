@@ -7,3 +7,7 @@ Place install_and_run_mcp.py in ~/mcp/ and run.
 Script will download code from the internet and run.
 
 # Run 
+Run:
+python ~/mcp/mcp-flight-software/main_mcp.py
+
+Check results:
