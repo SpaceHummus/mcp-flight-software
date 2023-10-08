@@ -32,6 +32,7 @@ if __name__ == "__main__":
     tlm.gather_telemetry()
     
     # Compute hash on a big file
+    logging.info("Compute Hash on Big File...")
     bit_error_rate_handler.update_hash()
     
     # Take pictures in different iluminations
