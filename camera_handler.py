@@ -137,3 +137,8 @@ if __name__ == "__main__":
     camera.take_pic(is_use_full_resolution=True)
     camera.change_focus(900)
     camera.take_pic(is_use_full_resolution=False)
+    
+    # Run calibration by trying different values
+    for i in range(0, 1101, 100):
+        camera.change_focus(i):
+        camera.take_pic(is_use_full_resolution=False)
