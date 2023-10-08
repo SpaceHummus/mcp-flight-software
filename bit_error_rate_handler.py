@@ -39,7 +39,7 @@ def update_hash():
         return 0
   
 def read_hash():
-     try:
+    try:
         # Reading from the file
         with open(hash_file, 'r') as file:
             h = f.read()
