@@ -20,7 +20,7 @@ GPIO.setup(LED_ENABLE_PIN,GPIO.OUT)
 def get_led_mode():
     return led_mode_report.get_led_mode_from_file()
 
-def set_led_mode(new_r, new_g, new_b, new_mode_name):
+def set_led_mode(new_mode_name, new_r=-1, new_g=-1, new_b=-1):
     
     # Read what is the current mode
     current_mode_name, current_r, current_g, current_b = get_led_mode()
