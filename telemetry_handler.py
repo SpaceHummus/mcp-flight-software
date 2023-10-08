@@ -217,10 +217,20 @@ class TelemetryHandler:
         hex_strings = [hex(num) for num in active_i2c_addresses]
 
         # Join the hexadecimal strings into a single string
-        result = ' '.join(hex_strings)
-        logging.debug("\nActive I2C Devices: " + result)
+        active_i2c_devices_str = ' '.join(hex_strings)
+        logging.debug("\nActive I2C Devices: " + active_i2c_devices_str)
         
-        return [result]
+        # Self check which devices are connected 
+        def is_address_active(address, device_name):
+            if addressin active_i2c_devices_str:
+                logging.debug(f"{address} CONNECTED     ({device_name})")
+            else:
+                logging.debug(f"{address} NOT CONNECTED ({device_name})")
+        is_address_active("0x58","SPG30 Gas Sensor")
+        
+        
+        
+        return [active_i2c_devices_str]
             
     # Gather how long it took to gather all telemetry
     def _get_telemetry_gather_time(self, is_output_header):
