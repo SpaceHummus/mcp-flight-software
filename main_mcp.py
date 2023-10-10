@@ -68,3 +68,6 @@ if __name__ == "__main__":
     
     # Finally, update code for next run
     git.git_update_code()
+    
+    # Say that we are done
+    logging.info("Done with this loop")
