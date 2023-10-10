@@ -15,6 +15,6 @@ To run as a stand alone \
 The script should execute for 100 sec, then exit.\
 You can download artifacts at \
 ```~/mcp/mcp-flight-software/artifacts.zip``` 
-\
+
 
 Check results:
