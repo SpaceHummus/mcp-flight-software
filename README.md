@@ -14,6 +14,6 @@ To run as a stand alone \
 ```cd ~/mcp/mcp-flight-software/ && sudo python main_mcp.py``` \
 The script should execute for xx sec, then exit.\
 You can download artifacts at \
-```~/mcp/mcp-flight-software/artifacts.zip```\
+```~/mcp/mcp-flight-software/artifacts.zip``` \
 
 Check results:
