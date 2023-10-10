@@ -16,7 +16,7 @@ import os
 # Camera parameters
 NEAR_FOCUS=600
 FAR_FOCUS=1000
-IS_USE_FULL_RESOLUTION=False
+IS_USE_FULL_RESOLUTION=True
 
 if __name__ == "__main__":
     setup_logging()
