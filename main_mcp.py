@@ -36,12 +36,15 @@ if __name__ == "__main__":
         set_led_mode(mode_name,r,g,b)
         path = camera.take_pic(focus=near_or_far,is_use_full_resolution=IS_USE_FULL_RESOLUTION)
         return path
-    artifacts_files_paths.append(take_picture_with_led("OFF",0,0,0,NEAR_FOCUS))
-    artifacts_files_paths.append(take_picture_with_led("RED",255,0,0,NEAR_FOCUS))
-    artifacts_files_paths.append(take_picture_with_led("GREEN",0,255,0,NEAR_FOCUS))
-    artifacts_files_paths.append(take_picture_with_led("BLUE",0,0,255,NEAR_FOCUS))
-    artifacts_files_paths.append(take_picture_with_led("WHITE_NEAR",255,255,255,NEAR_FOCUS))
-    artifacts_files_paths.append(take_picture_with_led("WHITE_FAR",255,255,255,FAR_FOCUS))
+    R = 200
+    G = 200
+    B = 100
+    artifacts_files_paths.append(take_picture_with_led("OFF",       0,0,0,FAR_FOCUS))
+    artifacts_files_paths.append(take_picture_with_led("RED",       R,0,0,FAR_FOCUS))
+    artifacts_files_paths.append(take_picture_with_led("GREEN",     0,G,0,FAR_FOCUS))
+    artifacts_files_paths.append(take_picture_with_led("BLUE".      0,0,B,FAR_FOCUS))
+    artifacts_files_paths.append(take_picture_with_led("WHITE_FAR", R,G,B,FAR_FOCUS))
+    artifacts_files_paths.append(take_picture_with_led("WHITE_NEAR",R,G,B,NEAR_FOCUS))
     set_led_mode("OFF")
     
     for i in range(5): # Loop a few times
