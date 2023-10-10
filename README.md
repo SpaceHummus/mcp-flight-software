@@ -4,6 +4,7 @@ Equivalent to scp_v4
 
 # Install
 Place install_and_run_mcp.py in ~/mcp/ and run this command
+newline
 ```python ~/mcp/install_and_run_mcp.py```
 
 You can also run this command to delete everything and start fresh
