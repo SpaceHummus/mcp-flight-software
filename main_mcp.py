@@ -42,7 +42,7 @@ if __name__ == "__main__":
     artifacts_files_paths.append(take_picture_with_led("OFF",       0,0,0,FAR_FOCUS))
     artifacts_files_paths.append(take_picture_with_led("RED",       R,0,0,FAR_FOCUS))
     artifacts_files_paths.append(take_picture_with_led("GREEN",     0,G,0,FAR_FOCUS))
-    artifacts_files_paths.append(take_picture_with_led("BLUE".      0,0,B,FAR_FOCUS))
+    artifacts_files_paths.append(take_picture_with_led("BLUE",      0,0,B,FAR_FOCUS))
     artifacts_files_paths.append(take_picture_with_led("WHITE_FAR", R,G,B,FAR_FOCUS))
     artifacts_files_paths.append(take_picture_with_led("WHITE_NEAR",R,G,B,NEAR_FOCUS))
     set_led_mode("OFF")
