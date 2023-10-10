@@ -47,13 +47,14 @@ if __name__ == "__main__":
     artifacts_files_paths.append(take_picture_with_led("WHITE_NEAR",R,G,B,NEAR_FOCUS))
     set_led_mode("OFF")
     
+    # Compute hash on a big file
+    logging.info("Compute Hash on Big File...")
+    h = bit_error_rate_handler.hash_large_file()
+    logging.info(h)
+    tlm.big_file_hash = h
+    logging.info("Done Hashing")
+    
     for i in range(5): # Loop a few times
-        # Compute hash on a big file
-        logging.info("Compute Hash on Big File...")
-        h = bit_error_rate_handler.hash_large_file()
-        logging.info(h)
-        tlm.big_file_hash = h
-        logging.info("Done Hashing")
         
         # Gather telemetry
         logging.info("Gathering Telemetry...")
