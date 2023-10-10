@@ -12,8 +12,9 @@ You can also run this command to delete everything and start fresh \
 # Run 
 To run as a stand alone \
 ```cd ~/mcp/mcp-flight-software/ && sudo python main_mcp.py``` \
-The script should execute for xx sec, then exit.\
+The script should execute for 100 sec, then exit.\
 You can download artifacts at \
-```~/mcp/mcp-flight-software/artifacts.zip``` \
+```~/mcp/mcp-flight-software/artifacts.zip``` 
+\
 
 Check results:
