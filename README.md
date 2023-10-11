@@ -20,5 +20,5 @@ You can download artifacts at \
 Check results:
 
 # Experiments 
-Pressure experiment \
+Pressure experiment & Leak test\
 ```cd ~/mcp/mcp-flight-software/ && sudo python main_pressure_experiment.py```
