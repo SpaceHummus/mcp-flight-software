@@ -26,14 +26,7 @@ if __name__ == "__main__":
     #setup_logging()
     git = GitHandler()
     
-    logging.basicConfig(
-        logging.ERROR,
-        format="%(asctime)s [%(levelname)s] %(funcName)s: %(message)s",
-        handlers=[
-            logging.FileHandler("scp_main.log"),
-            logging.StreamHandler()
-        ]
-    )   
+    logging.basicConfig(level=logging.ERROR)  
     
     led_mode_report.set_led_mode_to_file('',0,0,0)
     
