@@ -64,6 +64,11 @@ if __name__ == "__main__":
     with zipfile.ZipFile("artifacts.zip", 'w', zipfile.ZIP_DEFLATED) as zipf:
         for file in artifacts_files_paths:
             zipf.write(file, os.path.basename(file))
+            
+    # Gather a bit more data
+    if not IS_IN_SPACE:
+        for _ in range(5):
+            tlm.gather_telemetry(is_full_telemetry=True)
     
     # Finally, update code for next run
     if not IS_IN_SPACE:
