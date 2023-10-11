@@ -69,6 +69,7 @@ if __name__ == "__main__":
     if not IS_IN_SPACE:
         for _ in range(5):
             tlm.gather_telemetry(is_full_telemetry=True)
+            time.sleep(5)
     
     # Finally, update code for next run
     if not IS_IN_SPACE:
