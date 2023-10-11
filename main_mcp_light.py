@@ -27,7 +27,7 @@ if __name__ == "__main__":
     s = tlm.gather_telemetry(is_full_telemetry=True)
     
     print(len(str(s)))
-    print(s)
+    print(str(s))
    
     # Finally, update code for next run
     if not IS_IN_SPACE:
