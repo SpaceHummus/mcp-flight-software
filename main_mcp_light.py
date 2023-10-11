@@ -26,7 +26,7 @@ if __name__ == "__main__":
     tlm = TelemetryHandler()
     s = tlm.gather_telemetry(is_full_telemetry=True)
     
-    print(len(s))
+    print(len(str(s)))
     print(s)
    
     # Finally, update code for next run
