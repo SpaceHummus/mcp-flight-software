@@ -8,6 +8,7 @@ from telemetry_handler import TelemetryHandler
 from setup_logging import setup_logging
 from led_service import set_led_mode
 from camera_handler import CameraHandler
+import camera_preprocess
 import time
 import zipfile
 import os
@@ -47,20 +48,16 @@ if __name__ == "__main__":
     R = 150
     G = 170
     B = 50
-    artifacts_files_paths.append(take_picture_with_led("OFF",       0,0,0,FAR_FOCUS,  False))
-    artifacts_files_paths.append(take_picture_with_led("RED",       R,0,0,FAR_FOCUS,  False))
-    artifacts_files_paths.append(take_picture_with_led("GREEN",     0,G,0,FAR_FOCUS,  False))
-    artifacts_files_paths.append(take_picture_with_led("BLUE",      0,0,B,FAR_FOCUS,  False))
+    take_picture_with_led("OFF",       0,0,0,FAR_FOCUS,  False)
+    take_picture_with_led("RED",       R,0,0,FAR_FOCUS,  False)
+    take_picture_with_led("GREEN",     0,G,0,FAR_FOCUS,  False)
+    take_picture_with_led("BLUE",      0,0,B,FAR_FOCUS,  False)
     artifacts_files_paths.append(take_picture_with_led("WHITE_FAR", R,G,B,FAR_FOCUS,  False))
-    artifacts_files_paths.append(take_picture_with_led("WHITE_FAR", R,G,B,FAR_FOCUS,  True))
-    artifacts_files_paths.append(take_picture_with_led("WHITE_NEAR",R,G,B,NEAR_FOCUS, True))
+    im_file_path = take_picture_with_led("WHITE_FAR", R,G,B,FAR_FOCUS,  True)
+    artifacts_files_paths.append(camera_preprocess.preprocess(im_file_path))
+    im_file_path = take_picture_with_led("WHITE_NEAR",R,G,B,NEAR_FOCUS, True)
+    artifacts_files_paths.append(camera_preprocess.preprocess(im_file_path))  
     set_led_mode("OFF")
-    
-    for i in range(5): # Loop a few times
-        
-        # Gather telemetry
-        logging.info("Gathering Telemetry...")
-        tlm.gather_telemetry(is_full_telemetry=False)
         
     # Collect artifacts and zip them
     logging.info("Zip artifacts to artifacts.zip file...")
