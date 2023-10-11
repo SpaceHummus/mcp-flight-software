@@ -3,6 +3,7 @@ This file contains all telemetry services applicable by this board
 '''
 
 import board
+import bit_error_rate_handler
 import csv
 from datetime import datetime
 import itertools
@@ -29,7 +30,6 @@ TELEMETRY_FILE = 'telemetry.csv'
 class TelemetryHandler:
     i2c = None
     collecting_telemetry_start_time = None
-    big_file_hash = "" # When computing hash on the big file, set this parameter to be included in csv
 
     def __init__(self):
         self.i2c = board.I2C()
@@ -38,7 +38,7 @@ class TelemetryHandler:
     # RTC: I2C Address 0x68
     
     # Gather general information about the date/time and led mode
-    def _get_date_time_state_telemetry(self, is_output_header):
+    def _get_date_time_state_telemetry(self, is_output_header, is_full_telemetry):
         if is_output_header:
             # Just output the header, not the data
             return ['Date & Time','LED Mode']
@@ -52,13 +52,20 @@ class TelemetryHandler:
     # I2C Address 0x40, 0x76
     temperature_celsius = -1
     relative_humidity = -1
-    def _get_ms8607_telemetry(self, is_output_header): 
+    def _get_ms8607_telemetry(self, is_output_header, is_full_telemetry): 
         if is_output_header:
             # Just output the header, not the data
             return [
                 'MS8670_Pressure[hPa]',
                 'MS8670_Temperature[C]',
                 'MS8670_RelativeHumidity[%]',
+                ]
+        if not is_full_telemetry:
+            # No need for high frequency of this telemetry
+            return [
+                '',
+                '',
+                '',
                 ]
     
         # Get the actual data
@@ -108,12 +115,18 @@ class TelemetryHandler:
                 f"error while initializing SGP30: \n{e}"
             )
         
-    def _get_sgp30_telemetry(self, is_output_header):
+    def _get_sgp30_telemetry(self, is_output_header, is_full_telemetry):
         if is_output_header:
             # Just output the header, not the data
             return [
                 'SGP30_eCO2[ppm]',
                 'SGP30_TVOC[ppb]',
+                ]
+        if not is_full_telemetry:
+            # No need for high frequency of this telemetry
+            return [
+                '',
+                '',
                 ]
         
         # Make sure that enough time passed from init such that sensor is accurate 
@@ -140,7 +153,7 @@ class TelemetryHandler:
     
     # Gather ambient light intensity
     # I2C Address 0x28 and 0x29
-    def _get_tsl2591_telemetry(self, is_output_header):
+    def _get_tsl2591_telemetry(self, is_output_header, is_full_telemetry):
         if is_output_header:
             # Just output the header, not the data
             return [
@@ -163,7 +176,7 @@ class TelemetryHandler:
     
     # Gather current and power consumption.
     # I2C Address 0x41
-    def _probe_ina3221_telemetry(self, is_output_header):
+    def _probe_ina3221_telemetry(self, is_output_header, is_full_telemetry):
         if is_output_header:
             # Just output the header, not the data
             return [
@@ -209,10 +222,15 @@ class TelemetryHandler:
             return [''] # Return empty csv
             
     # Understand what are the active I2C Devices
-    def _probe_i2c_devices(self,is_output_header):
+    def _probe_i2c_devices(self,is_output_header, is_full_telemetry):
         if is_output_header:
             # Just output the header, not the data
             return ['Active I2C Devices [Hex]']
+        if not is_full_telemetry:
+            # No need for high frequency of this telemetry
+            return [
+                '',
+                ]
     
         # Probe
         active_i2c_addresses = self.i2c.scan()
@@ -241,8 +259,17 @@ class TelemetryHandler:
               
         return [active_i2c_devices_str]
             
+    # Gather big file hash
+    def _get_telemetry_gather_hash(self, is_output_header, is_full_telemetry):
+        if is_output_header:
+            # Just output the header, not the data
+            return ['BigFileHash',]
+        
+        h = bit_error_rate_handler.hash_large_file()
+        return [h]    
+    
     # Gather how long it took to gather all telemetry
-    def _get_telemetry_gather_time(self, is_output_header):
+    def _get_telemetry_gather_time(self, is_output_header, is_full_telemetry):
         if is_output_header:
             # Just output the header, not the data
             return ['BigFileHash','TelemetryCycleTime[sec]','TotalUptime[min]',]
@@ -256,7 +283,9 @@ class TelemetryHandler:
 
 ###################### End of Private Functions to Collect Telemetry ######################
 
-    def gather_telemetry(self, is_output_header=False):
+    # is_output_header - Set to True to generate only header, False to gather telemetry.
+    # is_full_telemetry - Set to True to gather all telemetry, False to gather only high frequency telemetry.
+    def gather_telemetry(self, is_output_header=False, is_full_telemetry=True):
     
         # Mark the time we started to collect telemetry
         self.collecting_telemetry_start_time = time.time()
@@ -265,7 +294,7 @@ class TelemetryHandler:
         if not os.path.exists(TELEMETRY_FILE):
             # File doesn't exist, you must output header first
             is_output_header = True
-            logging.info("Telemetry file doesn't exist, creating it")
+            logging.debug("Telemetry file doesn't exist, creating it")
             
         # If starting with header, clean the old file first
         if is_output_header:
@@ -276,14 +305,14 @@ class TelemetryHandler:
         row = list()
         with open(TELEMETRY_FILE, 'a', encoding='UTF8', newline='') as f:
             writer = csv.writer(f)
-            row.append(self._get_date_time_state_telemetry(is_output_header))
-            row.append(self._get_ms8607_telemetry(is_output_header))
+            row.append(self._get_date_time_state_telemetry(is_output_header, is_full_telemetry))
+            row.append(self._get_ms8607_telemetry(is_output_header, is_full_telemetry))
             self._init_sgp30_telemetry(self.temperature_celsius, self.relative_humidity) # Init sensor with the measured data
-            row.append(self._get_tsl2591_telemetry(is_output_header))
-            row.append(self._probe_ina3221_telemetry(is_output_header))
-            row.append(self._get_sgp30_telemetry(is_output_header))
-            row.append(self._probe_i2c_devices(is_output_header))
-            row.append(self._get_telemetry_gather_time(is_output_header))
+            row.append(self._get_tsl2591_telemetry(is_output_header, is_full_telemetry))
+            row.append(self._probe_ina3221_telemetry(is_output_header, is_full_telemetry))
+            row.append(self._get_sgp30_telemetry(is_output_header, is_full_telemetry))
+            row.append(self._probe_i2c_devices(is_output_header, is_full_telemetry))
+            row.append(self._get_telemetry_gather_time(is_output_header, is_full_telemetry))
             
             # Flatten the list
             row = list(itertools.chain.from_iterable(row))

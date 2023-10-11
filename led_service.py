@@ -36,7 +36,7 @@ def set_led_mode(new_mode_name, new_r=-1, new_g=-1, new_b=-1):
         return
         
     # Capture telemtry before making the change so we have reference to compare to
-    tlm.gather_telemetry()
+    tlm.gather_telemetry(is_full_telemetry=False)
     
     # Set GPIO switch according to mode
     if new_mode_name.lower() == "off":
@@ -55,7 +55,7 @@ def set_led_mode(new_mode_name, new_r=-1, new_g=-1, new_b=-1):
     led_mode_report.set_led_mode_to_file(new_mode_name, new_r, new_g, new_b)
 
     # Capture telemtry right after making the change so we have reference to compare to
-    tlm.gather_telemetry()
+    tlm.gather_telemetry(is_full_telemetry=False)
         
     
 
