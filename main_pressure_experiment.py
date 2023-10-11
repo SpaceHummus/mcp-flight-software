@@ -20,18 +20,18 @@ if __name__ == "__main__":
     # Count down before starting to apply pressure
     for countdown in range(10, 0, -1):
         print(countdown)
-        capture_pressure()
+        capture_pressure(tlm)
         time.sleep(1)  # Sleep for 1 second
 
     # First few seconds capture every 100 ms
     start_time = time.time()
     while (time.time() < start_time + 20):
-        capture_pressure()
+        capture_pressure(tlm)
         if time.time() < start_time + 20:
             logging.log("20 sec passed")
         time.sleep(0.1)
     
     # then capture every 5 sec
     while True:
-        capture_pressure()
+        capture_pressure(tlm)
         time.sleep(0.1)
