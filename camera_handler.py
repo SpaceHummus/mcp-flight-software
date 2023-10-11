@@ -33,6 +33,22 @@ def board3bcm(pin):
         return 9
     elif pin == 22:
         return 25
+       
+# Return how many pictures taken so far       
+def how_many_pictures_taken():
+    # Get next number from file
+    try:
+        # Try to open the file for reading
+        with open(file_path, 'r') as file:
+            # Read the current number from the file
+            n = int(file.read().strip())
+            
+    except Exception as e:
+        logging.warning(f"Can't determine n:\n{e}")
+        # Handle file not found or corrupted (invalid content)
+        n = 0
+    
+    return n
 
 
 class CameraHandler:
@@ -112,17 +128,7 @@ class CameraHandler:
     def _take_pic_increment_index_by_one(self):
         file_path = Path(CURRENT_FOLDER + "/" + "pic_number.txt")
         
-        # Get next number from file
-        try:
-            # Try to open the file for reading
-            with open(file_path, 'r') as file:
-                # Read the current number from the file
-                n = int(file.read().strip())
-                
-        except Exception as e:
-            logging.warning(f"Can't determine n:\n{e}")
-            # Handle file not found or corrupted (invalid content)
-            n = 0
+        n = how_many_pictures_taken()
         
         # Increment the number and write it back to the file
         try:

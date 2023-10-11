@@ -5,6 +5,7 @@ This file contains all telemetry services applicable by this board
 import board
 import bit_error_rate_handler
 import csv
+import camera_handler
 from datetime import datetime
 import itertools
 import led_mode_report
@@ -258,15 +259,28 @@ class TelemetryHandler:
         
               
         return [active_i2c_devices_str]
-            
+      
+    # How many pictures taken      
+    def _get_telemetry_how_many_pictures_taken(self, is_output_header, is_full_telemetry):
+        if is_output_header:
+            # Just output the header, not the data
+            return ['NPicturesTaken',]
+        if not is_full_telemetry:
+            return ['']
+    
+        n=camera_handler.how_many_pictures_taken()
+        return [n]
+        
     # Gather big file hash
-    def _get_telemetry_gather_hash(self, is_output_header, is_full_telemetry):
+    def _get_telemetry_big_file_hash(self, is_output_header, is_full_telemetry):
         if is_output_header:
             # Just output the header, not the data
             return ['BigFileHash',]
+        if not is_full_telemetry:
+            return ['']
         
         h = bit_error_rate_handler.hash_large_file()
-        return [h]    
+        return [h]  
     
     # Gather how long it took to gather all telemetry
     def _get_telemetry_gather_time(self, is_output_header, is_full_telemetry):
@@ -311,7 +325,9 @@ class TelemetryHandler:
             row.append(self._get_tsl2591_telemetry(is_output_header, is_full_telemetry))
             row.append(self._probe_ina3221_telemetry(is_output_header, is_full_telemetry))
             row.append(self._get_sgp30_telemetry(is_output_header, is_full_telemetry))
-            row.append(self._probe_i2c_devices(is_output_header, is_full_telemetry))
+            row.append(self._probe_i2c_devices(is_output_header, is_full_telemetry))       
+            row.append(self._get_telemetry_how_many_pictures_taken(is_output_header, is_full_telemetry))
+            row.append(self._get_telemetry_big_file_hash(is_output_header, is_full_telemetry))          
             row.append(self._get_telemetry_gather_time(is_output_header, is_full_telemetry))
             
             # Flatten the list
