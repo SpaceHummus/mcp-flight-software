@@ -8,10 +8,13 @@ from telemetry_handler import TelemetryHandler
 from setup_logging import setup_logging
 from led_service import set_led_mode
 from camera_handler import CameraHandler
+import camera_handler
 import camera_preprocess
 import time
 import zipfile
 import os
+import led_mode_report
+import logging
 
 # Camera parameters
 NEAR_FOCUS=600
@@ -22,6 +25,17 @@ IS_IN_SPACE=False
 if __name__ == "__main__":
     #setup_logging()
     git = GitHandler()
+    
+    logging.basicConfig(
+        logging.ERROR,
+        format="%(asctime)s [%(levelname)s] %(funcName)s: %(message)s",
+        handlers=[
+            logging.FileHandler("scp_main.log"),
+            logging.StreamHandler()
+        ]
+    )   
+    
+    led_mode_report.set_led_mode_to_file('',0,0,0)
     
     tlm = TelemetryHandler()
     s = tlm.gather_telemetry(is_full_telemetry=True)
