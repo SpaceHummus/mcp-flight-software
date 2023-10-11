@@ -25,12 +25,10 @@ if __name__ == "__main__":
 
     # First few seconds capture every 100 ms
     start_time = time.time()
-    skip_print = False;
     while (time.time() < start_time + 20):
         capture_pressure(tlm)
-        if time.time() > start_time + 20 and not skip_print:
-            logging.info("20 sec passed")
-            skip_print = True
+
+    logging.info("20 sec passed")
     
     # then capture every 5 sec
     while True:
