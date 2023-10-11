@@ -18,3 +18,7 @@ You can download artifacts at \
 
 
 Check results:
+
+# Experiments 
+Pressure experiment \
+```cd ~/mcp/mcp-flight-software/ && sudo python main_pressure_experiment.py``` \
