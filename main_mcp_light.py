@@ -20,7 +20,7 @@ IS_USE_FULL_RESOLUTION=True
 IS_IN_SPACE=False
 
 if __name__ == "__main__":
-    setup_logging()
+    #setup_logging()
     git = GitHandler()
     
     tlm = TelemetryHandler()
