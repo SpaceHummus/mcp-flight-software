@@ -17,8 +17,8 @@ The script should execute for 100 sec, then exit.\
 You can download artifacts at \
 ```~/mcp/mcp-flight-software/artifacts.zip``` 
 
-Check results:
-```cd ~/mcp/mcp-flight-software/ && cat telemetry.csv``` \
+Check results: \
+```cd ~/mcp/mcp-flight-software/ && cat telemetry.csv```
 
 # Experiments 
 Pressure experiment & Leak test\
