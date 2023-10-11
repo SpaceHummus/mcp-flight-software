@@ -36,9 +36,9 @@ if __name__ == "__main__":
         set_led_mode(mode_name,r,g,b)
         path = camera.take_pic(focus=near_or_far,is_use_full_resolution=IS_USE_FULL_RESOLUTION)
         return path
-    R = 200
-    G = 200
-    B = 100
+    R = 150
+    G = 170
+    B = 50
     artifacts_files_paths.append(take_picture_with_led("OFF",       0,0,0,FAR_FOCUS))
     artifacts_files_paths.append(take_picture_with_led("RED",       R,0,0,FAR_FOCUS))
     artifacts_files_paths.append(take_picture_with_led("GREEN",     0,G,0,FAR_FOCUS))
