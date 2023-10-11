@@ -20,7 +20,7 @@ import logging
 NEAR_FOCUS=600
 FAR_FOCUS=1000
 IS_USE_FULL_RESOLUTION=True
-IS_IN_SPACE=False
+IS_IN_SPACE=True
 
 if __name__ == "__main__":
     #setup_logging()
