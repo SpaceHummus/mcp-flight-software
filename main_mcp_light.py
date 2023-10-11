@@ -28,7 +28,10 @@ if __name__ == "__main__":
     
     logging.basicConfig(level=logging.ERROR)  
     
-    led_mode_report.set_led_mode_to_file('',0,0,0)
+    R = 150
+    G = 170
+    B = 50
+    set_led_mode('',R,G,B)
     
     tlm = TelemetryHandler()
     s = tlm.gather_telemetry(is_full_telemetry=True)
