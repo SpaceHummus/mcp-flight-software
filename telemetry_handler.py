@@ -167,7 +167,9 @@ class TelemetryHandler:
         if is_output_header:
             # Just output the header, not the data
             return [
-                'INA_Current1[mA]','INA_Voltage1[V]','INA_Current2[mA]','INA_Voltage2[V]','INA_Current3[mA]','INA_Voltage3[V]',
+                'INA_Voltage1[V]', 'INA_Current1[mA]',
+                'INA_Voltage2[V]', 'INA_Current2[mA]',
+                'INA_Voltage3[V]', 'INA_Current3[mA]',
                 ]
                 
         # Get the actual data
@@ -189,16 +191,16 @@ class TelemetryHandler:
             voltage3 = ina3221.bus_voltage(3)
             
             # Log and return
-            logging.debug("Ch1: Current: %3.0f[mA], Voltage: %1.2f[V]",current1,voltage1)
-            logging.debug("Ch2: Current: %3.0f[mA], Voltage: %1.2f[V]",current2,voltage2)
-            logging.debug("Ch3: Current: %3.0f[mA], Voltage: %1.2f[V]",current3,voltage3)
+            logging.debug("Ch1: Voltage: %1.2f[V], Current: %3.0f[mA]",voltage1,current1)
+            logging.debug("Ch2: Voltage: %1.2f[V], Current: %3.0f[mA]",voltage2,current2)
+            logging.debug("Ch3: Voltage: %1.2f[V], Current: %3.0f[mA]",voltage3,current3)
             return [
-                "{:<3.0f}".format(current1),
                 "{:<1.2f}".format(voltage1),
-                "{:<3.0f}".format(current2),
+                "{:<3.0f}".format(current1),
                 "{:<1.2f}".format(voltage2),
-                "{:<3.0f}".format(current3),
+                "{:<3.0f}".format(current2),
                 "{:<1.2f}".format(voltage3),
+                "{:<3.0f}".format(current3),
                 ]
         except Exception as e:
             logging.error(
