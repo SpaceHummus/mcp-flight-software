@@ -20,6 +20,10 @@ IS_USE_FULL_RESOLUTION=True
 
 if __name__ == "__main__":
     setup_logging()
+    
+    # Start a new csv file
+    if os.path.exists('telemetry.csv'):
+        os.remove('telemetry.csv')
 
     # Define the services that would be used
     logging.info("Starting Services...")

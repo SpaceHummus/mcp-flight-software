@@ -286,7 +286,7 @@ class TelemetryHandler:
             # Flatten the list
             row = list(itertools.chain.from_iterable(row))
            
-            logging.info(row) # Log the content of the telemetry
+            #logging.info(row) # Log the content of the telemetry
             writer.writerow(row)
         
         if is_output_header:
