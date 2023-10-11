@@ -21,4 +21,4 @@ Check results:
 
 # Experiments 
 Pressure experiment \
-```cd ~/mcp/mcp-flight-software/ && sudo python main_pressure_experiment.py``` \
+```cd ~/mcp/mcp-flight-software/ && sudo python main_pressure_experiment.py```
