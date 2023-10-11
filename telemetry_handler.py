@@ -291,7 +291,6 @@ class TelemetryHandler:
         execution_time = time.time() - self.collecting_telemetry_start_time
         total_uptime_min = uptime_handler.report_min_counter()
         return [
-            self.big_file_hash,
             "{:.1f}".format(execution_time),
             "{:.0f}".format(total_uptime_min)]    
 
