@@ -7,8 +7,7 @@ import os
 import time
 
 def capture_pressure(tlm):
-    a,_,_ = tlm._get_ms8607_telemetry(is_output_header=False, is_full_telemetry=False)
-    print(a+"[hPa]")
+    a,_,_ = tlm._get_ms8607_telemetry(is_output_header=False, is_full_telemetry=True)
 
 
 if __name__ == "__main__":
