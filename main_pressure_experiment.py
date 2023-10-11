@@ -31,9 +31,8 @@ if __name__ == "__main__":
         if time.time() > start_time + 20 and not skip_print:
             logging.info("20 sec passed")
             skip_print = True
-        time.sleep(0.1)
     
     # then capture every 5 sec
     while True:
         capture_pressure(tlm)
-        time.sleep(0.1)
+        time.sleep(5)
