@@ -39,6 +39,7 @@ def how_many_pictures_taken():
     # Get next number from file
     try:
         # Try to open the file for reading
+        file_path = Path(CURRENT_FOLDER + "/" + "pic_number.txt")
         with open(file_path, 'r') as file:
             # Read the current number from the file
             n = int(file.read().strip())
