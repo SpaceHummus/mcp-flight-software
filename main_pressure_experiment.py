@@ -11,7 +11,7 @@ def capture_pressure(tlm):
 
 
 if __name__ == "__main__":
-    setup_logging();
+    setup_logging(True);
 
     # Define the services that would be used
     logging.info("Starting Services...")
@@ -25,10 +25,12 @@ if __name__ == "__main__":
 
     # First few seconds capture every 100 ms
     start_time = time.time()
+    skip_print = False;
     while (time.time() < start_time + 20):
         capture_pressure(tlm)
-        if time.time() < start_time + 20:
-            logging.log("20 sec passed")
+        if time.time() > start_time + 20 and not skip_print:
+            logging.info("20 sec passed")
+            skip_print = True
         time.sleep(0.1)
     
     # then capture every 5 sec
