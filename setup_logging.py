@@ -2,10 +2,14 @@
 
 import logging
 
-def setup_logging():
+def setup_logging(is_log_level_debug = False):
+    if is_log_level_debug:
+        log_level = logging.DEBUG
+    else:
+        log_level = logging.INFO
+        
     logging.basicConfig(
-        # level=logging.DEBUG,
-        level=logging.INFO,
+        level=log_level,
         format="%(asctime)s [%(levelname)s] %(funcName)s: %(message)s",
         handlers=[
             logging.FileHandler("scp_main.log"),
