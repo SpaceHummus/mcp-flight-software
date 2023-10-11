@@ -21,6 +21,7 @@ IS_IN_SPACE=False
 
 if __name__ == "__main__":
     setup_logging()
+    git = GitHandler()
     
     tlm = TelemetryHandler()
     s = tlm.gather_telemetry(is_full_telemetry=True)
