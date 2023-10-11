@@ -40,19 +40,20 @@ if __name__ == "__main__":
     # Take pictures in different iluminations
     camera = CameraHandler()
     artifacts_files_paths = ['telemetry.csv']
-    def take_picture_with_led(mode_name,r,g,b,near_or_far):
+    def take_picture_with_led(mode_name,r,g,b,near_or_far,is_use_full_resolution):
         set_led_mode(mode_name,r,g,b)
-        path = camera.take_pic(focus=near_or_far,is_use_full_resolution=IS_USE_FULL_RESOLUTION)
+        path = camera.take_pic(focus=near_or_far,is_use_full_resolution=is_use_full_resolution)
         return path
     R = 150
     G = 170
     B = 50
-    artifacts_files_paths.append(take_picture_with_led("OFF",       0,0,0,FAR_FOCUS))
-    artifacts_files_paths.append(take_picture_with_led("RED",       R,0,0,FAR_FOCUS))
-    artifacts_files_paths.append(take_picture_with_led("GREEN",     0,G,0,FAR_FOCUS))
-    artifacts_files_paths.append(take_picture_with_led("BLUE",      0,0,B,FAR_FOCUS))
-    artifacts_files_paths.append(take_picture_with_led("WHITE_FAR", R,G,B,FAR_FOCUS))
-    artifacts_files_paths.append(take_picture_with_led("WHITE_NEAR",R,G,B,NEAR_FOCUS))
+    artifacts_files_paths.append(take_picture_with_led("OFF",       0,0,0,FAR_FOCUS,  False))
+    artifacts_files_paths.append(take_picture_with_led("RED",       R,0,0,FAR_FOCUS,  False))
+    artifacts_files_paths.append(take_picture_with_led("GREEN",     0,G,0,FAR_FOCUS,  False))
+    artifacts_files_paths.append(take_picture_with_led("BLUE",      0,0,B,FAR_FOCUS,  False))
+    artifacts_files_paths.append(take_picture_with_led("WHITE_FAR", R,G,B,FAR_FOCUS,  False))
+    artifacts_files_paths.append(take_picture_with_led("WHITE_FAR", R,G,B,FAR_FOCUS,  True))
+    artifacts_files_paths.append(take_picture_with_led("WHITE_NEAR",R,G,B,NEAR_FOCUS, True))
     set_led_mode("OFF")
     
     for i in range(5): # Loop a few times
