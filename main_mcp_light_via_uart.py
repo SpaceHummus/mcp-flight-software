@@ -7,8 +7,6 @@ import logging
 from telemetry_handler import TelemetryHandler
 from setup_logging import setup_logging
 from led_service import set_led_mode
-from camera_handler import CameraHandler
-import camera_handler
 import camera_preprocess
 import time
 import zipfile
@@ -40,7 +38,7 @@ if __name__ == "__main__":
     R = 150
     G = 170
     B = 50
-    set_led_mode('',R,G,B)
+    #set_led_mode('',R,G,B)
     
     tlm = TelemetryHandler()
     s = tlm.gather_telemetry(is_full_telemetry=True)
